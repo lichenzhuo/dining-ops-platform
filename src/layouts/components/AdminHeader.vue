@@ -1,13 +1,24 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
 
-const brand = ref('味满鲜')
-const region = ref('华东区')
-const store = ref('全部门店')
+const brand = computed({
+  get: () => authStore.org.brand,
+  set: (value: string) => authStore.updateOrg({ brand: value }),
+})
+const region = computed({
+  get: () => authStore.org.region,
+  set: (value: string) => authStore.updateOrg({ region: value }),
+})
+const store = computed({
+  get: () => authStore.org.store,
+  set: (value: string) => authStore.updateOrg({ store: value }),
+})
 
 const breadcrumbs = computed(() => {
   const matched = route.matched.filter((item) => item.meta?.title)
@@ -22,6 +33,11 @@ const breadcrumbs = computed(() => {
 
 function goLargeScreen() {
   router.push('/large-screen')
+}
+
+function handleLogout() {
+  authStore.logout()
+  router.replace('/login')
 }
 </script>
 
@@ -86,10 +102,10 @@ function goLargeScreen() {
 
       <el-dropdown trigger="click" placement="bottom-end">
         <div class="user-block">
-          <el-avatar :size="32" class="user-avatar">运</el-avatar>
+          <el-avatar :size="32" class="user-avatar">{{ authStore.avatarText }}</el-avatar>
           <div class="user-meta">
-            <span class="user-name">张运营</span>
-            <span class="user-role">总部运营管理员</span>
+            <span class="user-name">{{ authStore.displayName }}</span>
+            <span class="user-role">{{ authStore.roleLabel }}</span>
           </div>
           <el-icon class="user-arrow"><ArrowDown /></el-icon>
         </div>
@@ -103,7 +119,7 @@ function goLargeScreen() {
               <el-icon><Setting /></el-icon>
               偏好设置
             </el-dropdown-item>
-            <el-dropdown-item divided @click="router.push('/login')">
+            <el-dropdown-item divided @click="handleLogout">
               <el-icon><SwitchButton /></el-icon>
               退出登录
             </el-dropdown-item>

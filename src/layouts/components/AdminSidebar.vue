@@ -2,15 +2,18 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import * as ElementPlusIcons from '@element-plus/icons-vue'
-import { adminMenuGroups } from '@/router/menu'
+import { useAuthStore } from '@/stores/auth'
 import { useLayoutStore } from '@/stores/layout'
+import { filterMenuGroups } from '@/utils/menu'
 
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
 const layoutStore = useLayoutStore()
 
 const activeMenu = computed(() => route.path)
 const isCollapsed = computed(() => layoutStore.sidebarCollapsed)
+const visibleMenuGroups = computed(() => filterMenuGroups(authStore.menuPaths))
 
 function resolveIcon(name?: string) {
   if (!name) return ElementPlusIcons.Menu
@@ -69,7 +72,7 @@ function handleMenuSelect(path: string) {
         class="sidebar-menu"
         @select="handleMenuSelect"
       >
-        <template v-for="group in adminMenuGroups" :key="group.title">
+        <template v-for="group in visibleMenuGroups" :key="group.title">
           <el-menu-item-group v-if="!isCollapsed" :title="group.title">
             <el-menu-item v-for="item in group.items" :key="item.path" :index="item.path">
               <el-icon><component :is="resolveIcon(item.icon)" /></el-icon>

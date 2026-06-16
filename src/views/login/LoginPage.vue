@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, reactive, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { useAuthStore } from '@/stores/auth'
+import { getDefaultHomePath } from '@/utils/menu'
 import LoginBrandPanel from './components/LoginBrandPanel.vue'
 
+const REMEMBER_USERNAME_KEY = 'dop-remember-username'
+
+const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
 const loading = ref(false)
 const loginMode = ref<'account' | 'qrcode'>('account')
 
@@ -23,10 +30,33 @@ const securityItems = [
 
 async function handleLogin() {
   loading.value = true
-  await new Promise((resolve) => setTimeout(resolve, 500))
-  loading.value = false
-  router.push('/overview')
+  try {
+    await authStore.login(form.username, form.password)
+    if (form.remember) {
+      localStorage.setItem(REMEMBER_USERNAME_KEY, form.username)
+    } else {
+      localStorage.removeItem(REMEMBER_USERNAME_KEY)
+    }
+    ElMessage.success('登录成功')
+    const redirect =
+      typeof route.query.redirect === 'string'
+        ? route.query.redirect
+        : getDefaultHomePath(authStore.menuPaths)
+    await router.replace(redirect)
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '登录失败，请稍后重试')
+  } finally {
+    loading.value = false
+  }
 }
+
+onMounted(() => {
+  const rememberedUsername = localStorage.getItem(REMEMBER_USERNAME_KEY)
+  if (rememberedUsername) {
+    form.username = rememberedUsername
+    form.remember = true
+  }
+})
 </script>
 
 <template>
@@ -126,7 +156,9 @@ async function handleLogin() {
                 登 录
               </el-button>
 
-              <p class="login-hint">演示账号 admin / 123456，点击登录直接进入系统</p>
+              <p class="login-hint">
+                演示账号：admin / region / store，密码均为 123456（权限逐级收窄）
+              </p>
             </el-form>
           </template>
 

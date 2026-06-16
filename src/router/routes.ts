@@ -1,19 +1,32 @@
 import type { RouteRecordRaw } from 'vue-router'
 import type { AppLayout } from '@/types'
+import type { UserRole } from '@/types/auth'
+import { getRolesForPath } from '@/mocks/auth'
 import { adminMenuItems } from './menu'
+
+interface AdminRouteOptions {
+  icon?: string
+  roles?: UserRole[]
+}
 
 function adminRoute(
   path: string,
   name: string,
   title: string,
   component: NonNullable<RouteRecordRaw['component']>,
-  icon?: string,
+  options: AdminRouteOptions = {},
 ): RouteRecordRaw {
   return {
     path,
     name,
     component,
-    meta: { title, layout: 'admin' satisfies AppLayout, icon },
+    meta: {
+      title,
+      layout: 'admin' satisfies AppLayout,
+      icon: options.icon,
+      requiresAuth: true,
+      roles: options.roles ?? getRolesForPath(path),
+    },
   }
 }
 
@@ -23,7 +36,7 @@ function placeholderRoute(path: string, name: string, title: string, icon?: stri
     name,
     title,
     () => import('@/views/_placeholder/ModulePlaceholder.vue'),
-    icon,
+    { icon },
   )
 }
 
@@ -41,7 +54,7 @@ const placeholderRoutes: RouteRecordRaw[] = adminMenuItems
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/login',
+    redirect: '/overview',
   },
   {
     path: '/login',
@@ -50,6 +63,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '登录',
       layout: 'blank',
+      requiresAuth: false,
     },
   },
   adminRoute(
@@ -57,14 +71,14 @@ const routes: RouteRecordRaw[] = [
     'Overview',
     '系统总览',
     () => import('@/views/overview/OverviewPage.vue'),
-    'Grid',
+    { icon: 'Grid' },
   ),
   adminRoute(
     '/dashboard',
     'Dashboard',
     '经营工作台',
     () => import('@/views/dashboard/DashboardPage.vue'),
-    'Odometer',
+    { icon: 'Odometer' },
   ),
   ...placeholderRoutes.filter(
     (route, index, self) => self.findIndex((item) => item.path === route.path) === index,
@@ -77,11 +91,12 @@ const routes: RouteRecordRaw[] = [
       title: '经营指挥大屏',
       layout: 'screen',
       icon: 'Monitor',
+      requiresAuth: true,
     },
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/login',
+    redirect: '/overview',
   },
 ]
 

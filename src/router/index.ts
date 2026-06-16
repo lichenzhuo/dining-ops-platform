@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { setupRouterGuards } from './guards'
 import routes from './routes'
 
 const router = createRouter({
@@ -6,6 +7,8 @@ const router = createRouter({
   routes,
   scrollBehavior: () => ({ top: 0 }),
 })
+
+setupRouterGuards(router)
 
 router.afterEach((to) => {
   const title = (to.meta.title as string) || '餐饮连锁运营平台'
