@@ -1,12 +1,13 @@
 @use './reset.scss';
+@use './element-vars.scss';
 
 .page-container {
   min-height: 100%;
-  padding: 24px;
 }
 
 .page-card {
   background: $bg-container;
-  border-radius: $radius-base;
+  border: 1px solid $border-light;
+  border-radius: $radius-lg;
   box-shadow: $shadow-card;
 }

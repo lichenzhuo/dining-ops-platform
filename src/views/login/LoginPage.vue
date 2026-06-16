@@ -1,105 +1,155 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAppStore } from '@/stores/app'
+import LoginBrandPanel from './components/LoginBrandPanel.vue'
 
 const router = useRouter()
-const appStore = useAppStore()
 const loading = ref(false)
+const loginMode = ref<'account' | 'qrcode'>('account')
 
 const form = reactive({
   username: 'admin',
   password: '123456',
   captcha: '',
+  remember: true,
 })
 
-const securityItems = ['SSO 单点登录', 'RBAC 权限控制', '数据加密传输', '操作审计留痕']
+const securityItems = [
+  { icon: 'Key', label: 'SSO 单点登录' },
+  { icon: 'Lock', label: 'RBAC 权限控制' },
+  { icon: 'CircleCheck', label: '数据加密传输' },
+  { icon: 'Document', label: '操作审计留痕' },
+]
 
 async function handleLogin() {
   loading.value = true
-  await new Promise((resolve) => setTimeout(resolve, 400))
+  await new Promise((resolve) => setTimeout(resolve, 500))
   loading.value = false
-  router.push('/dashboard')
+  router.push('/overview')
 }
 </script>
 
 <template>
   <div class="login-page">
-    <section class="login-brand">
-      <div class="brand-content">
-        <p class="brand-badge">餐饮连锁 · 企业运营平台</p>
-        <h1>{{ appStore.appName }}</h1>
-        <p class="brand-desc">
-          连接 POS、外卖、CRM、库存与财务数据，覆盖经营分析、报表下钻、大屏展示、AI 营销与门店执行闭环。
-        </p>
-        <ul class="brand-features">
-          <li>
-            <el-icon><TrendCharts /></el-icon>
-            经营工作台与报表中心
-          </li>
-          <li>
-            <el-icon><Monitor /></el-icon>
-            经营指挥大屏与地图态势
-          </li>
-          <li>
-            <el-icon><MagicStick /></el-icon>
-            AI 营销 Agent 与审批下发
+    <LoginBrandPanel />
+
+    <section class="login-main">
+      <div class="login-main__inner">
+        <div class="login-card">
+          <div class="login-card__head">
+            <span class="login-card__mark">
+              <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="16" fill="url(#cardGrad)" />
+                <path
+                  d="M10 12c0 4 2.6 6.5 6 6.5S22 16 22 12M16 18.5V23"
+                  stroke="#fff"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                />
+                <circle cx="16" cy="11" r="1.4" fill="#fff" />
+                <defs>
+                  <linearGradient id="cardGrad" x1="3" y1="3" x2="29" y2="29">
+                    <stop stop-color="#36cfc9" />
+                    <stop offset="1" stop-color="#13a8a8" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </span>
+            <div class="login-card__heading">
+              <h2>欢迎登录</h2>
+              <p>连锁餐饮经营与营销管理平台</p>
+            </div>
+          </div>
+
+          <div class="login-card__tabs">
+            <button
+              type="button"
+              class="login-tab"
+              :class="{ 'login-tab--active': loginMode === 'account' }"
+              @click="loginMode = 'account'"
+            >
+              账号登录
+            </button>
+            <button
+              type="button"
+              class="login-tab"
+              :class="{ 'login-tab--active': loginMode === 'qrcode' }"
+              @click="loginMode = 'qrcode'"
+            >
+              扫码登录
+            </button>
+          </div>
+
+          <template v-if="loginMode === 'account'">
+            <el-form :model="form" size="large" class="login-form" @submit.prevent="handleLogin">
+              <el-form-item>
+                <el-input v-model="form.username" placeholder="请输入账号 / 手机号">
+                  <template #prefix>
+                    <el-icon><User /></el-icon>
+                  </template>
+                </el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-input
+                  v-model="form.password"
+                  type="password"
+                  placeholder="请输入密码"
+                  show-password
+                >
+                  <template #prefix>
+                    <el-icon><Lock /></el-icon>
+                  </template>
+                </el-input>
+              </el-form-item>
+              <el-form-item>
+                <div class="captcha-row">
+                  <el-input v-model="form.captcha" placeholder="请输入验证码">
+                    <template #prefix>
+                      <el-icon><CircleCheck /></el-icon>
+                    </template>
+                  </el-input>
+                  <button type="button" class="captcha-img" aria-label="刷新验证码">K8M3</button>
+                </div>
+              </el-form-item>
+
+              <div class="login-options">
+                <el-checkbox v-model="form.remember">记住账号</el-checkbox>
+                <el-link type="primary" :underline="false">忘记密码？</el-link>
+              </div>
+
+              <el-button
+                type="primary"
+                class="login-submit"
+                :loading="loading"
+                native-type="submit"
+              >
+                登 录
+              </el-button>
+
+              <p class="login-hint">演示账号 admin / 123456，点击登录直接进入系统</p>
+            </el-form>
+          </template>
+
+          <template v-else>
+            <div class="qrcode-panel">
+              <div class="qrcode-box">
+                <div class="qrcode-placeholder" />
+              </div>
+              <p>使用企业微信 / 钉钉扫码登录</p>
+              <el-link type="primary" :underline="false">刷新二维码</el-link>
+            </div>
+          </template>
+        </div>
+
+        <ul class="security-bar">
+          <li v-for="item in securityItems" :key="item.label">
+            <el-icon><component :is="item.icon" /></el-icon>
+            {{ item.label }}
           </li>
         </ul>
-      </div>
-      <div class="brand-decoration">
-        <div class="deco-card deco-card--1">营业额 +12.6%</div>
-        <div class="deco-card deco-card--2">门店执行 86%</div>
-        <div class="deco-card deco-card--3">AI 推荐动作 3 条</div>
-      </div>
-    </section>
 
-    <section class="login-panel">
-      <el-card class="login-card" shadow="never">
-        <h2>账号登录</h2>
-        <p class="login-subtitle">总部运营 · 区域管理 · 门店执行统一入口</p>
-        <el-form :model="form" size="large" @submit.prevent="handleLogin">
-          <el-form-item>
-            <el-input v-model="form.username" placeholder="请输入账号">
-              <template #prefix>
-                <el-icon><User /></el-icon>
-              </template>
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-input
-              v-model="form.password"
-              type="password"
-              placeholder="请输入密码"
-              show-password
-            >
-              <template #prefix>
-                <el-icon><Lock /></el-icon>
-              </template>
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <div class="captcha-row">
-              <el-input v-model="form.captcha" placeholder="验证码（演示可留空）" />
-              <div class="captcha-box">A8K2</div>
-            </div>
-          </el-form-item>
-          <el-button type="primary" class="login-btn" :loading="loading" native-type="submit">
-            登录
-          </el-button>
-        </el-form>
-        <div class="login-extra">
-          <el-link type="primary" :underline="false">扫码登录</el-link>
-          <el-link type="info" :underline="false">忘记密码</el-link>
-        </div>
-      </el-card>
-
-      <ul class="security-list">
-        <li v-for="item in securityItems" :key="item">
-          <el-icon><CircleCheck /></el-icon>
-          {{ item }}
-        </li>
-      </ul>
+        <p class="login-copyright">© 2024-2026 味链云 · 连锁餐饮数字化运营管理平台 · 演示项目</p>
+      </div>
     </section>
   </div>
 </template>
@@ -107,157 +157,181 @@ async function handleLogin() {
 <style scoped lang="scss">
 .login-page {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1.2fr 0.8fr;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0faf8 0%, #eef4ff 48%, #f7fbff 100%);
+  background: $bg-container;
 }
 
-.login-brand {
-  position: relative;
+.login-main {
   display: flex;
   align-items: center;
-  padding: 48px 56px;
-  overflow: hidden;
-}
-
-.brand-content {
-  position: relative;
-  z-index: 1;
-  max-width: 520px;
-}
-
-.brand-badge {
-  display: inline-block;
-  margin: 0 0 12px;
-  padding: 4px 10px;
-  font-size: 12px;
-  color: $color-brand;
-  background: rgba(19, 194, 194, 0.12);
-  border-radius: 999px;
-}
-
-.brand-content h1 {
-  margin: 0 0 16px;
-  font-size: 34px;
-  line-height: 1.25;
-  color: $color-brand-dark;
-}
-
-.brand-desc {
-  margin: 0 0 24px;
-  color: $text-secondary;
-  line-height: 1.7;
-}
-
-.brand-features {
-  display: grid;
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    color: $text-primary;
-    font-weight: 500;
-  }
-}
-
-.brand-decoration {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.deco-card {
-  position: absolute;
-  padding: 10px 14px;
-  font-size: 13px;
-  color: $color-brand-dark;
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(19, 194, 194, 0.2);
-  border-radius: $radius-base;
-  box-shadow: $shadow-card;
-}
-
-.deco-card--1 {
-  top: 18%;
-  right: 12%;
-}
-
-.deco-card--2 {
-  top: 42%;
-  right: 24%;
-}
-
-.deco-card--3 {
-  bottom: 22%;
-  right: 10%;
-}
-
-.login-panel {
-  display: flex;
-  flex-direction: column;
   justify-content: center;
-  gap: 20px;
-  padding: 48px 56px 48px 24px;
+  padding: 40px 56px;
+}
+
+.login-main__inner {
+  width: min(400px, 100%);
 }
 
 .login-card {
-  border: 1px solid $border-color;
-  border-radius: 12px;
+  padding: 8px 4px 0;
+}
 
-  h2 {
-    margin: 0 0 8px;
-    font-size: 24px;
-    color: $text-primary;
+.login-card__head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.login-card__mark {
+  display: flex;
+  width: 44px;
+  height: 44px;
+
+  svg {
+    width: 100%;
+    height: 100%;
   }
 }
 
-.login-subtitle {
-  margin: 0 0 24px;
-  color: $text-secondary;
+.login-card__heading {
+  h2 {
+    margin: 0 0 4px;
+    font-size: 24px;
+    font-weight: 700;
+    color: $text-primary;
+  }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: $text-tertiary;
+  }
+}
+
+.login-card__tabs {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid $border-light;
+}
+
+.login-tab {
+  position: relative;
+  padding: 0 0 12px;
+  font-size: 15px;
+  color: $text-tertiary;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &--active {
+    font-weight: 600;
+    color: $color-brand;
+
+    &::after {
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      height: 2px;
+      background: $color-brand;
+      border-radius: 2px;
+      content: '';
+    }
+  }
+}
+
+.login-form {
+  :deep(.el-input__wrapper) {
+    padding: 6px 14px;
+    box-shadow: 0 0 0 1px $border-color inset;
+  }
+
+  :deep(.el-form-item) {
+    margin-bottom: 18px;
+  }
 }
 
 .captcha-row {
   display: grid;
-  grid-template-columns: 1fr 96px;
+  grid-template-columns: 1fr 108px;
   gap: 12px;
   width: 100%;
 }
 
-.captcha-box {
+.captcha-img {
+  height: 42px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: $color-brand-dark;
+  background: linear-gradient(135deg, #e6fffb 0%, #f0f5ff 100%);
+  border: 1px solid rgba(19, 194, 194, 0.35);
+  border-radius: $radius-base;
+  cursor: pointer;
+}
+
+.login-options {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: $color-brand-dark;
-  background: #f0fffe;
-  border: 1px dashed rgba(19, 194, 194, 0.45);
-  border-radius: $radius-base;
-  user-select: none;
-}
-
-.login-btn {
-  width: 100%;
-  margin-top: 4px;
-}
-
-.login-extra {
-  display: flex;
   justify-content: space-between;
-  margin-top: 16px;
+  margin-bottom: 22px;
 }
 
-.security-list {
+.login-submit {
+  width: 100%;
+  height: 46px;
+  font-size: 16px;
+  letter-spacing: 4px;
+  border-radius: $radius-base;
+}
+
+.login-hint {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: $text-placeholder;
+  text-align: center;
+}
+
+.qrcode-panel {
+  padding: 12px 0 8px;
+  text-align: center;
+
+  p {
+    margin: 16px 0 8px;
+    color: $text-secondary;
+  }
+}
+
+.qrcode-box {
+  display: flex;
+  justify-content: center;
+}
+
+.qrcode-placeholder {
+  width: 180px;
+  height: 180px;
+  background:
+    linear-gradient(45deg, #111 25%, transparent 25%) 0 0 / 12px 12px,
+    linear-gradient(-45deg, #111 25%, transparent 25%) 0 0 / 12px 12px,
+    linear-gradient(45deg, transparent 75%, #111 75%) 0 0 / 12px 12px,
+    linear-gradient(-45deg, transparent 75%, #111 75%) 0 0 / 12px 12px,
+    #fff;
+  border: 8px solid #f2f4f7;
+  border-radius: $radius-lg;
+}
+
+.security-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 20px;
-  margin: 0;
-  padding: 0 4px;
+  gap: 14px 20px;
+  justify-content: center;
+  margin: 32px 0 0;
+  padding: 20px 0 0;
+  border-top: 1px solid $border-light;
   list-style: none;
 
   li {
@@ -265,20 +339,31 @@ async function handleLogin() {
     gap: 6px;
     align-items: center;
     font-size: 12px;
-    color: $text-secondary;
+    color: $text-tertiary;
+
+    .el-icon {
+      color: $color-brand;
+    }
   }
 }
 
-@media (max-width: 960px) {
+.login-copyright {
+  margin: 16px 0 0;
+  font-size: 12px;
+  color: $text-placeholder;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
   .login-page {
     grid-template-columns: 1fr;
   }
 
-  .login-brand {
+  :deep(.login-brand-panel) {
     display: none;
   }
 
-  .login-panel {
+  .login-main {
     padding: 32px 20px;
   }
 }

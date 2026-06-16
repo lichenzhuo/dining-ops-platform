@@ -1,0 +1,30 @@
+:root {
+  --el-color-primary: #13c2c2;
+  --el-color-primary-light-3: #59d9d9;
+  --el-color-primary-light-5: #87e8de;
+  --el-color-primary-light-7: #b5f5ec;
+  --el-color-primary-light-8: #d9f7f7;
+  --el-color-primary-light-9: #e6fffb;
+  --el-color-primary-dark-2: #0e9e9e;
+
+  --el-border-radius-base: 8px;
+  --el-font-size-base: 14px;
+  --el-text-color-primary: #1d2129;
+  --el-text-color-regular: #4e5969;
+  --el-text-color-secondary: #86909c;
+  --el-border-color: #e5e6eb;
+  --el-border-color-light: #f0f1f5;
+  --el-bg-color: #ffffff;
+  --el-bg-color-page: #f2f4f7;
+  --el-menu-active-color: #13c2c2;
+  --el-menu-hover-bg-color: rgba(19, 194, 194, 0.06);
+}
+
+.el-button--primary {
+  --el-button-bg-color: #13c2c2;
+  --el-button-border-color: #13c2c2;
+  --el-button-hover-bg-color: #36cfc9;
+  --el-button-hover-border-color: #36cfc9;
+  --el-button-active-bg-color: #0e9e9e;
+  --el-button-active-border-color: #0e9e9e;
+}

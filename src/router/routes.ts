@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import type { AppLayout } from '@/types'
+import { adminMenuItems } from './menu'
 
 function adminRoute(
   path: string,
@@ -25,6 +26,17 @@ function placeholderRoute(path: string, name: string, title: string, icon?: stri
     icon,
   )
 }
+
+const placeholderRoutes: RouteRecordRaw[] = adminMenuItems
+  .filter((item) => !['/overview', '/dashboard', '/large-screen'].includes(item.path))
+  .map((item) => {
+    const name = item.path
+      .replace(/^\//, '')
+      .split('-')
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join('')
+    return placeholderRoute(item.path, name || 'Module', item.title, item.icon)
+  })
 
 const routes: RouteRecordRaw[] = [
   {
@@ -54,12 +66,9 @@ const routes: RouteRecordRaw[] = [
     () => import('@/views/dashboard/DashboardPage.vue'),
     'Odometer',
   ),
-  placeholderRoute('/reports', 'Reports', '报表中心', 'DataAnalysis'),
-  placeholderRoute('/marketing', 'Marketing', '营销活动', 'Promotion'),
-  placeholderRoute('/ai-agent', 'AiAgent', 'AI 营销 Agent', 'MagicStick'),
-  placeholderRoute('/approval', 'Approval', '审批中心', 'DocumentChecked'),
-  placeholderRoute('/data-import', 'DataImport', '数据导入', 'Upload'),
-  placeholderRoute('/settings', 'Settings', '系统设置', 'Setting'),
+  ...placeholderRoutes.filter(
+    (route, index, self) => self.findIndex((item) => item.path === route.path) === index,
+  ),
   {
     path: '/large-screen',
     name: 'LargeScreen',
