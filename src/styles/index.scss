@@ -1,0 +1,12 @@
+@use './reset.scss';
+
+.page-container {
+  min-height: 100%;
+  padding: 24px;
+}
+
+.page-card {
+  background: $bg-container;
+  border-radius: $radius-base;
+  box-shadow: $shadow-card;
+}

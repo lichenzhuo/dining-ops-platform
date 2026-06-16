@@ -1,0 +1,23 @@
+---
+description: Core project guidance for Dining Ops Platform
+alwaysApply: true
+---
+
+# Dining Ops Platform Rules
+
+- This project is `餐饮连锁运营平台 / Dining Ops Platform`, a job-aligned Vue3 B-end learning project.
+- Main stack: Vue3, Vite, TypeScript, Vue Router, Pinia, Element Plus, ECharts, Axios.
+- Expanded stack must remain in scope unless user says otherwise: vxe-table/Table V2, xlsx, Web Worker, WebSocket, MQTT.js, SVG, Canvas, D3.js, X6, Three.js, WebGL, Cesium, AI Agent, AI Coding, Electron.
+- Always preserve the business line: data ingestion → Dashboard → report drilldown → large screen → map visualization → AI marketing action → approval → store execution → effect tracking.
+- Before implementation, check `README.md` and relevant docs under `docs/`.
+- Follow `docs/03-development-roadmap.md` phase order; do not build unrelated future modules early.
+- Before starting a coding phase, recommend a model based on the task, then wait for the user to confirm the recommended model or choose another one.
+- Use `GPT-5.4 Mini` for explanations, summaries, learning notes, and documentation work.
+- Use `Composer 2.5` for day-to-day coding, layout, standard components, and normal phase implementation.
+- Use `Auto` when the task complexity is unclear or when debugging an issue whose difficulty is uncertain.
+- Use `GPT-5.5` or `Codex 5.3` for cross-file refactors, complex report logic, performance work, or AI Agent implementation.
+- Use `Opus 4.8` only for especially hard 3D / Cesium / WebGL / architecture problems when the lighter options are insufficient.
+- For every completed phase, explain: what was built, Vue3 knowledge points, used stack, verification, and interview talking points.
+- Reports should be native Vue pages by default; iframe is only for external BI compatibility.
+- AI Agent must be a marketing workflow integrated with materials, approval, store dispatch, and effect tracking.
+- Electron is a later wrapper around the Web system, not the initial architecture.
