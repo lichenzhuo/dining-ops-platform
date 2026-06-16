@@ -160,13 +160,13 @@ Electron
 
 ## 当前状态
 
-第 1 阶段（项目初始化）已完成：
+第 2 阶段（基础 Layout 和路由）已完成：
 
-- Vue3 + Vite + TypeScript 工程脚手架
-- Element Plus 按需引入（unplugin-auto-import / unplugin-vue-components）
-- Vue Router、Pinia 基础接入
-- ESLint、Prettier、路径别名 `@/`、全局 SCSS 变量
-- 基础目录结构（`components`、`layouts`、`router`、`stores`、`views` 等）
+- 登录页 `/login`（blank 布局）
+- 后台 `AdminLayout`（侧边菜单 + 顶部栏）
+- 大屏 `ScreenLayout`（深色全屏）
+- 根据 `route.meta.layout` 自动切换布局
+- 基础路由与懒加载（含占位页）
 
 本地启动：
 

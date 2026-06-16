@@ -1,5 +1,7 @@
 // 企业后台主题变量（浅色 B 端风格）
 $color-primary: #1677ff;
+$color-brand: #13c2c2;
+$color-brand-dark: #0b4f6c;
 $color-success: #52c41a;
 $color-warning: #faad14;
 $color-danger: #ff4d4f;
@@ -17,3 +19,10 @@ $header-height: 56px;
 
 $radius-base: 8px;
 $shadow-card: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+// 经营大屏主题变量（深色全屏风格）
+$screen-bg: #071426;
+$screen-text-primary: #e6f4ff;
+$screen-text-secondary: rgba(230, 244, 255, 0.65);
+$screen-border: rgba(255, 255, 255, 0.08);
+$screen-accent: #13c2c2;

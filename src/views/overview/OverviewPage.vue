@@ -1,53 +1,97 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
 
+const router = useRouter()
 const appStore = useAppStore()
+
+const moduleEntries = [
+  { title: '经营工作台', path: '/dashboard', desc: '日常运营首页，KPI / 趋势 / 异常' },
+  { title: '报表中心', path: '/reports', desc: '原生 Vue 报表，字段配置与下钻' },
+  { title: '经营指挥大屏', path: '/large-screen', desc: '深色全屏投屏展示' },
+  { title: 'AI 营销 Agent', path: '/ai-agent', desc: '生成方案、审批、下发门店' },
+  { title: '审批中心', path: '/approval', desc: '营销动作与素材审批' },
+  { title: '数据导入', path: '/data-import', desc: 'POS / 外卖 / CRM 数据接入' },
+]
+
+function navigate(path: string) {
+  router.push(path)
+}
 </script>
 
 <template>
-  <div class="overview-page">
-    <el-card class="welcome-card" shadow="never">
-      <template #header>
-        <div class="card-header">
-          <span>{{ appStore.appName }}</span>
-          <el-tag type="success" size="small">Phase 1 初始化完成</el-tag>
+  <div class="overview-page page-container">
+    <el-card shadow="never" class="page-card intro-card">
+      <div class="intro-header">
+        <div>
+          <h2>{{ appStore.appName }}</h2>
+          <p>能力地图与业务闭环入口 · Phase 2 多布局路由已就绪</p>
         </div>
-      </template>
-      <p class="desc">Vue3 + Vite + TypeScript + Element Plus + Pinia + Vue Router 工程已就绪。</p>
-      <el-space wrap>
-        <el-button type="primary">经营工作台</el-button>
-        <el-button>报表中心</el-button>
-        <el-button>经营大屏</el-button>
-      </el-space>
+        <el-tag type="success">AdminLayout</el-tag>
+      </div>
     </el-card>
+
+    <el-row :gutter="16">
+      <el-col v-for="item in moduleEntries" :key="item.path" :xs="24" :sm="12" :lg="8">
+        <el-card shadow="hover" class="module-card" @click="navigate(item.path)">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.desc }}</p>
+          <el-button link type="primary">进入模块</el-button>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <style scoped lang="scss">
 .overview-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: $bg-page;
+  display: grid;
+  gap: 16px;
 }
 
-.welcome-card {
-  width: min(640px, 100%);
+.intro-card {
+  border: 1px solid $border-color;
 }
 
-.card-header {
+.intro-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  font-size: 18px;
-  font-weight: 600;
+  gap: 16px;
+
+  h2 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    color: $text-primary;
+  }
+
+  p {
+    margin: 0;
+    color: $text-secondary;
+  }
 }
 
-.desc {
-  margin: 0 0 20px;
-  color: $text-secondary;
-  line-height: 1.6;
+.module-card {
+  margin-bottom: 16px;
+  cursor: pointer;
+  border: 1px solid $border-color;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba(19, 194, 194, 0.45);
+  }
+
+  h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    color: $text-primary;
+  }
+
+  p {
+    margin: 0 0 12px;
+    min-height: 44px;
+    color: $text-secondary;
+    line-height: 1.6;
+  }
 }
 </style>

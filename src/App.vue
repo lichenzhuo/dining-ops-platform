@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import LayoutSwitcher from '@/layouts/LayoutSwitcher.vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 </script>
 
 <template>
   <el-config-provider :locale="zhCn">
-    <RouterView />
+    <LayoutSwitcher />
   </el-config-provider>
 </template>
