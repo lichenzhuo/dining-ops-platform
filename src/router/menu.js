@@ -10,6 +10,7 @@ export const adminMenuGroups = [
       { path: '/reports', title: '报表中心', icon: 'DataAnalysis' },
       { path: '/geo-visualization', title: '地图态势', icon: 'Location' },
       { path: '/visualization-lab', title: '可视化实验室', icon: 'DataBoard' },
+      { path: '/workflow-designer', title: '流程设计器', icon: 'Share' },
       { path: '/large-screen', title: '经营指挥大屏', icon: 'Monitor' },
     ],
   },

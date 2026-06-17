@@ -1,14 +1,18 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import {
   APPROVAL_WORKFLOW,
   CanvasStorePointsDemo,
+  D3ChannelFunnelChart,
+  D3MemberTierChart,
   MARKETING_WORKFLOW,
   SvgDataPipeline,
   SvgWorkflowDiagram,
 } from '@/visualization'
 
+const router = useRouter()
 const activeTab = ref('pipeline')
 const pointCount = ref(1200)
 
@@ -26,6 +30,10 @@ const mockPipeline = [
 function handleNodeClick(node) {
   ElMessage.info(`节点：${node.label}`)
 }
+
+function handleD3Click(item) {
+  ElMessage.info(`选中：${item.segment ?? item.stage}`)
+}
 </script>
 
 <template>
@@ -33,8 +41,9 @@ function handleNodeClick(node) {
     <header class="viz-lab__header">
       <div>
         <h2>可视化实验室</h2>
-        <p>SVG 负责结构化流程与链路，Canvas 负责大量点位与动态粒子；ECharts 负责常规统计图表。</p>
+        <p>SVG / Canvas / D3 / X6 分层负责不同可视化场景；ECharts 负责常规统计图表。</p>
       </div>
+      <el-button type="primary" @click="router.push('/workflow-designer')">打开 X6 流程设计器</el-button>
     </header>
 
     <el-tabs v-model="activeTab" class="viz-lab__tabs">
@@ -77,6 +86,22 @@ function handleNodeClick(node) {
           <CanvasStorePointsDemo :key="pointCount" :point-count="pointCount" />
         </section>
       </el-tab-pane>
+
+      <el-tab-pane label="D3 会员分层" name="d3-tier">
+        <section class="panel-card">
+          <h3>会员分层图</h3>
+          <p class="panel-card__desc">D3 数据驱动绑定，补充 ECharts 不便高度定制的分层关系图。</p>
+          <D3MemberTierChart @segment-click="handleD3Click" />
+        </section>
+      </el-tab-pane>
+
+      <el-tab-pane label="D3 渠道漏斗" name="d3-funnel">
+        <section class="panel-card">
+          <h3>渠道转化漏斗</h3>
+          <p class="panel-card__desc">曝光 → 点击 → 下单 → 核销 → 复购，自定义 SVG 几何绘制。</p>
+          <D3ChannelFunnelChart @stage-click="handleD3Click" />
+        </section>
+      </el-tab-pane>
     </el-tabs>
 
     <section class="panel-card viz-lab__compare">
@@ -85,6 +110,8 @@ function handleNodeClick(node) {
         <li><strong>ECharts</strong>：趋势、占比、地图等常规统计图表。</li>
         <li><strong>SVG</strong>：审批流、营销任务流、数据链路这类结构化可交互图形。</li>
         <li><strong>Canvas</strong>：大量点位、粒子背景、轨迹动画等高频重绘场景。</li>
+        <li><strong>D3</strong>：会员分层、渠道漏斗等高度定制的数据驱动 SVG 图形。</li>
+        <li><strong>X6</strong>：可拖拽、可连线的流程编排与设计器，见 <router-link to="/workflow-designer">流程设计器</router-link>。</li>
       </ul>
     </section>
   </div>
@@ -96,6 +123,11 @@ function handleNodeClick(node) {
   gap: 16px;
 
   &__header {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: space-between;
+
     h2 {
       margin: 0;
       font-size: 20px;

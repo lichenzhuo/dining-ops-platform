@@ -7,4 +7,8 @@ export {
   DATA_PIPELINE_NODES,
   MARKETING_WORKFLOW,
 } from './constants/pipeline'
+export { WORKFLOW_TEMPLATE_LIST, WORKFLOW_TEMPLATES } from './constants/x6Workflows'
 export { resizeCanvas, useCanvasLoop } from './composables/useCanvasLoop'
+export { default as D3ChannelFunnelChart } from './d3/D3ChannelFunnelChart.vue'
+export { default as D3MemberTierChart } from './d3/D3MemberTierChart.vue'
+export { default as X6WorkflowDesigner } from './x6/X6WorkflowDesigner.vue'

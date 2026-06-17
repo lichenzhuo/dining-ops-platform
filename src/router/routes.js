@@ -69,6 +69,17 @@ const routes = [
     },
   },
   {
+    path: '/workflow-designer',
+    name: 'WorkflowDesigner',
+    component: () => import('@/views/workflow-designer/WorkflowDesignerPage.vue'),
+    meta: {
+      title: '流程设计器',
+      layout: 'admin',
+      icon: 'Share',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/dashboard',
   },
