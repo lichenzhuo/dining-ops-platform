@@ -1,11 +1,20 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
+import { useRealtimeStore } from '@/stores/realtime'
 
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
+const realtimeStore = useRealtimeStore()
+
+const { unreadAlertCount, alerts } = storeToRefs(realtimeStore)
+
+const alertBadge = computed(() => (unreadAlertCount.value > 0 ? unreadAlertCount.value : undefined))
+
+const recentAlerts = computed(() => alerts.value.slice(0, 6))
 
 const brand = computed({
   get: () => authStore.org.brand,
@@ -34,6 +43,14 @@ const breadcrumbs = computed(() => {
 function handleLogout() {
   authStore.logout()
   router.replace('/login')
+}
+
+function handleAlertOpen() {
+  realtimeStore.markAlertsRead()
+}
+
+function goRealtimeMonitor() {
+  router.push('/realtime-monitor')
 }
 </script>
 
@@ -73,11 +90,29 @@ function handleLogout() {
     </div>
 
     <div class="header-right">
-      <el-badge :value="5" :max="99" class="header-badge">
-        <button type="button" class="header-icon-btn">
-          <el-icon><Bell /></el-icon>
-        </button>
-      </el-badge>
+      <el-dropdown trigger="click" placement="bottom-end" @visible-change="(visible) => visible && handleAlertOpen()">
+        <el-badge :value="alertBadge" :max="99" class="header-badge">
+          <button type="button" class="header-icon-btn">
+            <el-icon><Bell /></el-icon>
+          </button>
+        </el-badge>
+        <template #dropdown>
+          <el-dropdown-menu class="alert-dropdown">
+            <el-dropdown-item v-if="!recentAlerts.length" disabled>暂无实时告警</el-dropdown-item>
+            <el-dropdown-item v-for="item in recentAlerts" :key="item.id" divided>
+              <span class="alert-item">
+                <el-tag size="small" :type="item.level === 'danger' ? 'danger' : 'warning'">
+                  {{ item.level === 'danger' ? '高' : '中' }}
+                </el-tag>
+                {{ item.text }}
+              </span>
+            </el-dropdown-item>
+            <el-dropdown-item divided @click="goRealtimeMonitor">
+              查看实时监测中心
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
 
       <el-divider direction="vertical" />
 
@@ -224,6 +259,15 @@ function handleLogout() {
 .user-arrow {
   font-size: 12px;
   color: $text-tertiary;
+}
+
+.alert-item {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  max-width: 280px;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 @media (max-width: 1280px) {

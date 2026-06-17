@@ -6,11 +6,11 @@ import AdminHeader from './components/AdminHeader.vue'
 import AdminSidebar from './components/AdminSidebar.vue'
 
 const layoutStore = useLayoutStore()
+
 const sidebarWidth = computed(() =>
   layoutStore.sidebarCollapsed ? 'var(--sidebar-collapsed-width)' : 'var(--sidebar-width)',
 )
 </script>
-
 <template>
   <div class="admin-layout" :style="{ '--sidebar-current-width': sidebarWidth }">
     <AdminSidebar />

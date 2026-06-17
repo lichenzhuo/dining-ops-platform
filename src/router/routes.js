@@ -80,6 +80,17 @@ const routes = [
     },
   },
   {
+    path: '/realtime-monitor',
+    name: 'RealtimeMonitor',
+    component: () => import('@/views/realtime-monitor/RealtimeMonitorPage.vue'),
+    meta: {
+      title: '实时监测',
+      layout: 'admin',
+      icon: 'Connection',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/dashboard',
   },

@@ -23,7 +23,7 @@ const healthMap = {
       <div class="screen-header__logo">DOP</div>
       <div>
         <h1>{{ brand }} · 经营指挥大屏</h1>
-        <p>{{ region }} · 今日口径 · 自动刷新 30s</p>
+        <p>{{ region }} · WebSocket / MQTT 实时推送 · 30s 数据刷新</p>
       </div>
     </div>
 

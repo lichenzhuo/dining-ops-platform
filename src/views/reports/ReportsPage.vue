@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { ElMessage } from 'element-plus'
 import { useReportsStore } from '@/stores/reports'
+import { useRealtimeStore } from '@/stores/realtime'
 import KpiCardRow from '@/views/dashboard/components/KpiCardRow.vue'
 import ExternalBiPanel from './components/ExternalBiPanel.vue'
 import ReportCategoryTree from './components/ReportCategoryTree.vue'
@@ -17,6 +18,7 @@ import ReportToolbar from './components/ReportToolbar.vue'
 const route = useRoute()
 const router = useRouter()
 const reportsStore = useReportsStore()
+const realtimeStore = useRealtimeStore()
 
 const {
   reportId,
@@ -31,7 +33,26 @@ const {
   activeVisibleColumns,
 } = storeToRefs(reportsStore)
 
+const { exportMessages } = storeToRefs(realtimeStore)
+
 let syncingRoute = false
+
+watch(
+  () => exportMessages.value[0],
+  (latest) => {
+    if (!latest || latest.status !== 'done' || !exportTask.value) {
+      return
+    }
+    if (exportTask.value.status !== 'done') {
+      exportTask.value = {
+        ...exportTask.value,
+        status: 'done',
+        message: latest.message,
+      }
+      ElMessage.success('导出任务已完成（MQTT 通知）')
+    }
+  },
+)
 
 async function syncRouteAndLoad(replace = true) {
   syncingRoute = true

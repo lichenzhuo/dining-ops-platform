@@ -11,6 +11,7 @@ export const adminMenuGroups = [
       { path: '/geo-visualization', title: '地图态势', icon: 'Location' },
       { path: '/visualization-lab', title: '可视化实验室', icon: 'DataBoard' },
       { path: '/workflow-designer', title: '流程设计器', icon: 'Share' },
+      { path: '/realtime-monitor', title: '实时监测', icon: 'Connection' },
       { path: '/large-screen', title: '经营指挥大屏', icon: 'Monitor' },
     ],
   },

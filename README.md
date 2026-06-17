@@ -174,6 +174,7 @@ Electron
 - ECharts 地图 `/geo-visualization`（中国 GeoJSON、省份热力、门店 scatter、订单飞线、点击省市/门店下钻报表；大屏地图已同步接入）
 - SVG / Canvas 可视化增强：`/visualization-lab`（SVG 数据链路、审批流、营销任务流；Canvas 大量点位实验；D3 会员分层与渠道漏斗）；经营大屏已接入 SVG 数据链路与 Canvas 粒子背景
 - D3 / X6 流程可视化：`/workflow-designer`（X6 拖拽连线、节点配置、流程 JSON 导出；审批流 / AI 营销任务流 / 数据接入链路模板）
+- WebSocket / MQTT 实时数据：`/realtime-monitor`（Mock WebSocket 心跳、MQTT topic 订阅、订单流 / 库存预警 / 运营告警 / 导出任务 / 审批待办；AdminHeader 告警角标；报表导出 MQTT 完成通知；经营大屏实时订单滚动）
 
 本地启动：
 
@@ -188,7 +189,7 @@ npm run dev
 npm run build
 ```
 
-下一步：Three.js / Cesium 3D 可视化。
+下一步：AI 营销 Agent。
 
 
 ## 对外说明口径

@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useLargeScreenStore } from '@/stores/largeScreen'
+import { useRealtimeStore } from '@/stores/realtime'
 import { CanvasParticleLayer } from '@/visualization'
 import { useFullscreen } from './composables/useFullscreen'
 import { useScreenScale } from './composables/useScreenScale'
@@ -11,6 +12,7 @@ import ScreenHeader from './components/ScreenHeader.vue'
 import ScreenKpiBar from './components/ScreenKpiBar.vue'
 import ScreenLeftPanel from './components/ScreenLeftPanel.vue'
 import ScreenMapPanel from './components/ScreenMapPanel.vue'
+import ScreenOrderTicker from './components/ScreenOrderTicker.vue'
 import ScreenRightPanel from './components/ScreenRightPanel.vue'
 import ScreenSvgPipelineBar from './components/ScreenSvgPipelineBar.vue'
 import ScreenTrendPanel from './components/ScreenTrendPanel.vue'
@@ -18,13 +20,19 @@ import ScreenTrendPanel from './components/ScreenTrendPanel.vue'
 const router = useRouter()
 const authStore = useAuthStore()
 const largeScreenStore = useLargeScreenStore()
+const realtimeStore = useRealtimeStore()
 const viewportRef = ref()
 const { stageStyle } = useScreenScale()
 const { isFullscreen, toggleFullscreen } = useFullscreen(viewportRef)
 
 const { data, loading, error } = storeToRefs(largeScreenStore)
+const { orders, unreadAlertCount } = storeToRefs(realtimeStore)
 
 const stageInlineStyle = computed(() => stageStyle())
+
+const screenAlertCount = computed(
+  () => (data.value?.alertCount ?? 0) + unreadAlertCount.value,
+)
 
 onMounted(async () => {
   await largeScreenStore.loadScreen()
@@ -64,7 +72,7 @@ function handleOpenReport(payload = {}) {
         :region="authStore.org.region"
         :sync-time="data?.syncTime ?? '-'"
         :health-status="data?.healthStatus ?? 'healthy'"
-        :alert-count="data?.alertCount ?? 0"
+        :alert-count="screenAlertCount"
         :is-fullscreen="isFullscreen"
         @toggle-fullscreen="toggleFullscreen"
         @exit="handleExit"
@@ -81,6 +89,7 @@ function handleOpenReport(payload = {}) {
 
       <template v-if="data">
         <ScreenKpiBar :items="data.kpis" />
+        <ScreenOrderTicker :orders="orders" />
 
         <section class="large-screen-body">
           <ScreenLeftPanel
@@ -151,7 +160,7 @@ function handleOpenReport(payload = {}) {
   top: 0;
   left: 0;
   display: grid;
-  grid-template-rows: 72px 96px 1fr 88px;
+  grid-template-rows: 72px 96px 40px 1fr 88px;
   gap: 10px;
   padding: 12px 18px;
   color: $screen-text-primary;
