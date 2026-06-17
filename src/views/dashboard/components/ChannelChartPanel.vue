@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import { ElMessage } from 'element-plus'
 import { BaseChart } from '@/charts'
 
 const props = defineProps({
@@ -7,7 +8,18 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 })
+
+function handleChartClick(params) {
+  if (!params?.name) {
+    return
+  }
+  ElMessage.info(`渠道 ${params.name} · 占比 ${params.percent ?? params.value ?? '-'}%`)
+}
 
 const chartOption = computed(() => ({
   color: props.data.map((item) => item.color),
@@ -48,7 +60,12 @@ const chartOption = computed(() => ({
     <div class="card-head">
       <h3>渠道贡献</h3>
     </div>
-    <BaseChart :option="chartOption" height="240px" />
+    <BaseChart
+      :option="chartOption"
+      :loading="loading"
+      height="240px"
+      @click="handleChartClick"
+    />
     <ul class="channel-summary">
       <li v-for="item in data" :key="item.name">
         <span><i :style="{ background: item.color }" />{{ item.name }}</span>

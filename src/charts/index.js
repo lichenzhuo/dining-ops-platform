@@ -1,2 +1,4 @@
-/** ECharts 基础封装，第 7 阶段扩展统一配置 */
+/** ECharts 通用封装，供 Dashboard、报表、大屏复用 */
 export { default as BaseChart } from './BaseChart.vue'
+export { default as echarts } from './echarts'
+export { isEmptyChartOption } from './utils'

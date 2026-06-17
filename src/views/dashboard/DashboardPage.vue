@@ -86,9 +86,10 @@ async function handleTrendRangeChange(range) {
         <TrendChartPanel
           :data="data.trend"
           :trend-range="filters.trendRange"
+          :loading="loading"
           @update:trend-range="handleTrendRangeChange"
         />
-        <ChannelChartPanel :data="data.channels" />
+        <ChannelChartPanel :data="data.channels" :loading="loading" />
         <AvgOrderGauge :data="data.avgOrderValue" />
       </section>
 

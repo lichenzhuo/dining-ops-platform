@@ -160,13 +160,15 @@ Electron
 
 ## 当前状态
 
-第 2 阶段（基础 Layout 和路由）已完成：
+已完成：
 
-- 登录页 `/login`（blank 布局）
-- 后台 `AdminLayout`（侧边菜单 + 顶部栏）
-- 大屏 `ScreenLayout`（深色全屏）
-- 根据 `route.meta.layout` 自动切换布局
-- 基础路由与懒加载（含占位页）
+- Vue3 + Vite + TypeScript + Element Plus + Pinia + Vue Router 项目初始化
+- 登录页 `/login`（blank 布局、Mock 登录、记住账号）
+- 后台 `AdminLayout`（侧边菜单 + 顶部栏）、大屏 `ScreenLayout`、空白 `BlankLayout`
+- 根据 `route.meta.layout` 自动切换布局，路由懒加载
+- 路由守卫、Pinia 持久化（token / 用户信息 / 组织 / 菜单权限）、刷新后恢复登录态
+- 经营工作台 `/dashboard`（筛选条、KPI 卡片、趋势图、渠道图、客单价、门店排行、异常列表、审批待办、AI 建议、Mock 数据）
+- ECharts 通用封装 `BaseChart`（loading、empty、点击事件、ResizeObserver、实例生命周期管理），Dashboard 图表已接入
 
 本地启动：
 
@@ -181,7 +183,7 @@ npm run dev
 npm run build
 ```
 
-后续按阶段推进：登录页 → 后台 Layout → 路由守卫与 Pinia 持久化 → Dashboard …
+下一步：原生报表中心。
 
 
 ## 对外说明口径

@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import { ElMessage } from 'element-plus'
 import { BaseChart } from '@/charts'
 
 const props = defineProps({
@@ -11,9 +12,20 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['update:trendRange'])
+
+function handleChartClick(params) {
+  if (!params?.name) {
+    return
+  }
+  ElMessage.info(`${params.name} · ${params.seriesName ?? '数据点'}：${params.value ?? '-'}`)
+}
 
 const chartOption = computed(() => ({
   color: ['#13c2c2', '#1677ff'],
@@ -104,7 +116,12 @@ const chartOption = computed(() => ({
         <el-radio-button value="30d">近 30 日</el-radio-button>
       </el-radio-group>
     </div>
-    <BaseChart :option="chartOption" height="240px" />
+    <BaseChart
+      :option="chartOption"
+      :loading="loading"
+      height="240px"
+      @click="handleChartClick"
+    />
   </div>
 </template>
 
