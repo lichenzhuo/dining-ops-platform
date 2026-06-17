@@ -1,14 +1,18 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useRealtimeStore } from '@/stores/realtime'
+import { getElectronVersion, isElectron, openLargeScreenWindow } from '@/utils/electron'
 
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const realtimeStore = useRealtimeStore()
+
+const electronMode = ref(false)
+const electronVersion = ref('')
 
 const { unreadAlertCount, alerts } = storeToRefs(realtimeStore)
 
@@ -52,6 +56,17 @@ function handleAlertOpen() {
 function goRealtimeMonitor() {
   router.push('/realtime-monitor')
 }
+
+async function handleOpenLargeScreenWindow() {
+  await openLargeScreenWindow()
+}
+
+onMounted(async () => {
+  electronMode.value = isElectron()
+  if (electronMode.value) {
+    electronVersion.value = (await getElectronVersion()) ?? ''
+  }
+})
 </script>
 
 <template>
@@ -115,6 +130,12 @@ function goRealtimeMonitor() {
       </el-dropdown>
 
       <el-divider direction="vertical" />
+
+      <template v-if="electronMode">
+        <el-tag size="small" type="success" effect="plain">桌面端 {{ electronVersion }}</el-tag>
+        <el-button size="small" plain @click="handleOpenLargeScreenWindow">独立大屏窗口</el-button>
+        <el-divider direction="vertical" />
+      </template>
 
       <el-dropdown trigger="click" placement="bottom-end">
         <div class="user-block">

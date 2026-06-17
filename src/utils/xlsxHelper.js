@@ -1,5 +1,6 @@
 import * as XLSX from 'xlsx'
 import { getImportSchema, getImportType } from '@/constants/dataImport'
+import { saveFileWithDialog } from '@/utils/electron'
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/
 
@@ -89,7 +90,7 @@ export function validateImportRows(rows, importType) {
   return { validRows, errorRows, schema }
 }
 
-export function downloadImportTemplate(importType) {
+export async function downloadImportTemplate(importType) {
   const schema = getImportSchema(importType)
   const typeMeta = getImportType(importType)
   const header = schema.map((field) => field.label)
@@ -97,7 +98,7 @@ export function downloadImportTemplate(importType) {
   const worksheet = XLSX.utils.aoa_to_sheet([header, sample])
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, '导入模板')
-  XLSX.writeFile(workbook, typeMeta.fileName)
+  await writeWorkbookToFile(workbook, typeMeta.fileName)
 }
 
 export function parseWorkbookBuffer(buffer) {
@@ -108,13 +109,21 @@ export function parseWorkbookBuffer(buffer) {
   return { rows, sheetName }
 }
 
-export function exportRowsToExcel(rows, columns, filename) {
+async function writeWorkbookToFile(workbook, filename) {
+  const buffer = XLSX.write(workbook, { type: 'array', bookType: 'xlsx' })
+  return saveFileWithDialog(buffer, {
+    defaultPath: filename,
+    filters: [{ name: 'Excel', extensions: ['xlsx'] }],
+  })
+}
+
+export async function exportRowsToExcel(rows, columns, filename) {
   const header = columns.map((col) => col.label)
   const body = rows.map((row) => columns.map((col) => row[col.key] ?? ''))
   const worksheet = XLSX.utils.aoa_to_sheet([header, ...body])
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, '导出数据')
-  XLSX.writeFile(workbook, filename)
+  return writeWorkbookToFile(workbook, filename)
 }
 
 export function parseExcelInMainThread(file) {

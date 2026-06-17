@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { MQTT_TOPICS, WS_CHANNELS } from '@/realtime/constants/topics'
 import { createMqttClient } from '@/realtime/mqttClient'
 import { createWebSocketClient } from '@/realtime/websocketClient'
+import { showDesktopNotification } from '@/utils/electron'
 import { useExportQueueStore } from '@/stores/exportQueue'
 
 const MAX_STREAM_SIZE = 50
@@ -90,6 +91,10 @@ export const useRealtimeStore = defineStore('realtime', () => {
       case MQTT_TOPICS.ALERTS:
         pushToStream(alerts, payload)
         unreadAlertCount.value += 1
+        showDesktopNotification({
+          title: '运营告警',
+          body: payload.title ?? payload.message ?? '收到新的运营告警',
+        })
         break
       case MQTT_TOPICS.EXPORT:
         pushToStream(exportMessages, payload)

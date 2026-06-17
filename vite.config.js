@@ -7,17 +7,26 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
+const isElectron = process.env.ELECTRON === 'true'
+
 export default defineConfig({
+  base: isElectron ? './' : '/',
+  define: {
+    'import.meta.env.VITE_ELECTRON': JSON.stringify(isElectron),
+  },
   plugins: [
-    vueDevTools({
-      launchEditor: 'cursor',
-      componentInspector: {
-        // devtools 默认会关掉快捷键和按钮，这里显式打开
-        toggleComboKey: 'control-shift',
-        toggleButtonVisibility: 'active',
-        launchEditor: 'cursor',
-      },
-    }),
+    ...(isElectron
+      ? []
+      : [
+          vueDevTools({
+            launchEditor: 'cursor',
+            componentInspector: {
+              toggleComboKey: 'control-shift',
+              toggleButtonVisibility: 'active',
+              launchEditor: 'cursor',
+            },
+          }),
+        ]),
     vue(),
     AutoImport({
       resolvers: [ElementPlusResolver()],
@@ -44,7 +53,8 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    open: true,
+    open: !isElectron,
+    strictPort: isElectron,
   },
   build: {
     rollupOptions: {

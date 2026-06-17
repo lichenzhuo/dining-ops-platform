@@ -110,6 +110,7 @@ Electron
 - [模型路由与二次确认协议](docs/08-model-routing-and-confirmation.md)
 - [AI Coding 工作流沉淀](docs/09-ai-coding-workflow.md)
 - [阶段完成度自检（Phase 1–18）](docs/10-phase-completion-audit.md)
+- [Electron 桌面端](docs/11-electron-desktop.md)
 
 ## 推荐开发顺序
 
@@ -162,7 +163,7 @@ Electron
 
 ## 当前状态
 
-**进度**：路线图第 1–18 阶段已完成，第 19 阶段（Electron）未开始。  
+**进度**：路线图 **第 1–19 阶段已完成**（含 Electron 桌面端，开发分支 `feature/electron`）。  
 **完整自检表**：[docs/10-phase-completion-audit.md](docs/10-phase-completion-audit.md)
 
 ### 验证账号（Mock）
@@ -194,6 +195,17 @@ Electron
 - Three.js / Cesium 3D 可视化 `/geo-3d`（Cesium 3D 地球、区域柱状体、门店点位聚合、订单飞线、点击经营浮层；Three.js 3D 指标卡 Demo；可视化实验室 / ECharts 地图入口联动）
 - 可视化性能优化专题 `/performance-lab`（ECharts 实例复用与更新节流、虚拟滚动表格、Canvas 视口裁剪、Web Worker Excel 解析联动、Cesium 聚合与路由/Vite 分包策略）
 - AI Coding 工作流沉淀 `/ai-coding`（六步闭环、通用/阶段 Prompt 模板、过程案例、审查清单、`.cursor/prompts` 与 `docs/09-ai-coding-workflow.md`）
+- Electron 桌面端（分支 `feature/electron`：`electron/` 主进程 + preload + IPC；系统保存对话框、桌面通知、全屏/独立大屏窗口；见 [docs/11-electron-desktop.md](docs/11-electron-desktop.md)）
+
+### Electron 启动（桌面端）
+
+```bash
+npm install
+npm run electron:dev      # Vite + Electron 联调
+npm run electron:build    # 打包安装包 → release/
+```
+
+纯 Web 仍使用 `npm run dev` / `npm run build`。
 
 ### 实现说明与已知差距
 
@@ -203,7 +215,7 @@ Electron
 | TypeScript | 架构文档按渐进式 TS 设计，**当前源码为 JavaScript** |
 | 未实现路由 | `/overview`、`/marketing`、`/coupons`、`/members`、`/staff-promotion`、`/materials`、`/settings` 等见产品规划，留作扩展 |
 | 虚拟滚动 | 报表中心使用服务端分页；虚拟滚动 Demo 在 `/performance-lab` |
-| Electron | Phase 19，尚未开始 |
+| Electron | Phase 19，见 `feature/electron` 分支与 docs/11 |
 
 ### 已实现路由一览
 
@@ -226,7 +238,7 @@ npm run dev
 npm run build
 ```
 
-下一步：Electron 桌面端。
+下一步：可按业务规划扩展未实现模块（`/overview`、`/marketing` 等），或 TypeScript 渐进迁移。
 
 
 ## 对外说明口径

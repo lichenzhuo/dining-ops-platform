@@ -96,7 +96,7 @@ export const useExportQueueStore = defineStore(
         { col1: '示例门店', col2: '18640', col3: '2026-06-01' },
         { col1: '杭州西湖店', col2: '16230', col3: '2026-06-01' },
       ]
-      exportRowsToExcel(
+      return exportRowsToExcel(
         rows,
         [
           { key: 'col1', label: '门店' },
@@ -113,7 +113,7 @@ export const useExportQueueStore = defineStore(
         { store: '杭州西湖店', revenue: 16230, orders: 248, date: '2026-06-01' },
         { store: '南京新街口店', revenue: 14890, orders: 221, date: '2026-06-01' },
       ]
-      exportRowsToExcel(
+      return exportRowsToExcel(
         rows,
         [
           { key: 'store', label: '门店' },

@@ -6,7 +6,8 @@
 
 | 维度 | 状态 |
 |------|------|
-| 路线图 Phase 1–18 | **已完成**（共 18 步，Electron 为第 19 步未开始） |
+| 路线图 Phase 1–18 | **已完成** |
+| Phase 19 Electron | **已完成**（分支 `feature/electron`） |
 | 已实现业务/技术路由 | **14 条**（见 §3） |
 | 产品规划中的业务模块 | **部分实现**（营销/卡券/会员等留作扩展，见 §4） |
 | `npm run build` | **通过** |
@@ -38,7 +39,7 @@
 | 16 | Three.js / Cesium | ✅ | `/geo-3d` | 柱状体、聚合、飞线、Three 指标卡 | Cesium **按视野动态加载**为简化实现 |
 | 17 | 性能优化专题 | ✅ | `/performance-lab` | 节流对比、虚拟表格、分包 | 报表中心未默认接虚拟滚动 |
 | 18 | AI Coding 沉淀 | ✅ | `/ai-coding`、`docs/09`、`.cursor/prompts` | Prompt 可复制、案例与审查清单 | — |
-| 19 | Electron | ⏳ | — | — | **下一步** |
+| 19 | Electron | ✅ | `electron/` + `npm run electron:dev` | 保存对话框、通知、全屏、打包 | 分支 `feature/electron` |
 
 ---
 
@@ -164,6 +165,6 @@ npm run lint     # ESLint
 
 ---
 
-## 11. 下一步
+## 11. 路线图状态
 
-**Phase 19：Electron 桌面端** — Web 系统作渲染层，学习主进程、preload、IPC、全屏大屏与打包。
+**Phase 1–19 已全部完成。** 后续可选：业务模块扩展（`/marketing` 等）、TypeScript 迁移、Electron 自动更新。

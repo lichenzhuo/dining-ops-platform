@@ -40,8 +40,8 @@ export const useDataImportStore = defineStore('dataImport', () => {
     error.value = null
   }
 
-  function downloadTemplate() {
-    downloadImportTemplate(importType.value)
+  async function downloadTemplate() {
+    await downloadImportTemplate(importType.value)
   }
 
   async function parseFile(file) {

@@ -1,9 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import { setupRouterGuards } from './guards'
 import routes from './routes'
 
+const isElectronApp = import.meta.env.VITE_ELECTRON === 'true'
+
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: isElectronApp
+    ? createWebHashHistory(import.meta.env.BASE_URL)
+    : createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior: () => ({ top: 0 }),
 })
