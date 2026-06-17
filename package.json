@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -p tsconfig.app.json --noEmit && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --fix",
-    "format": "prettier --write \"src/**/*.{vue,ts,tsx,js,json,css,scss}\""
+    "format": "prettier --write \"src/**/*.{vue,js,json,css,scss}\""
   },
   "dependencies": {
     "@element-plus/icons-vue": "2.3.2",
+    "echarts": "^6.1.0",
     "element-plus": "^2.9.7",
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.7.1",
@@ -20,20 +21,15 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
-    "@types/node": "^22.13.10",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/eslint-config-prettier": "^10.2.0",
-    "@vue/eslint-config-typescript": "^14.5.0",
-    "@vue/tsconfig": "^0.7.0",
     "eslint": "^9.22.0",
     "eslint-plugin-vue": "^10.0.0",
+    "globals": "^16.0.0",
     "prettier": "^3.5.3",
     "sass": "^1.85.1",
-    "typescript": "~5.8.2",
-    "typescript-eslint": "^8.26.1",
     "unplugin-auto-import": "^19.1.1",
     "unplugin-vue-components": "^28.4.1",
-    "vite": "^6.2.2",
-    "vue-tsc": "^2.2.8"
+    "vite": "^6.2.2"
   }
 }

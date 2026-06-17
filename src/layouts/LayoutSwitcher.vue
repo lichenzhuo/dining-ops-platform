@@ -1,25 +1,22 @@
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import AdminLayout from './AdminLayout.vue'
 import BlankLayout from './BlankLayout.vue'
 import ScreenLayout from './ScreenLayout.vue'
-import type { AppLayout } from '@/types'
-import type { Component } from 'vue'
 
 const route = useRoute()
 
-const layoutMap: Record<AppLayout, Component> = {
+const layoutMap = {
   admin: AdminLayout,
   screen: ScreenLayout,
   blank: BlankLayout,
 }
 
 const currentLayout = computed(() => {
-  const layout = (route.meta.layout as AppLayout | undefined) ?? 'blank'
+  const layout = route.meta.layout ?? 'blank'
   return layoutMap[layout] ?? BlankLayout
-})
-</script>
+})</script>
 
 <template>
   <component :is="currentLayout">

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
@@ -12,7 +12,7 @@ const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const loading = ref(false)
-const loginMode = ref<'account' | 'qrcode'>('account')
+const loginMode = ref('account')
 
 const form = reactive({
   username: 'admin',

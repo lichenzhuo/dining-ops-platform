@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import * as ElementPlusIcons from '@element-plus/icons-vue'
@@ -15,12 +15,12 @@ const activeMenu = computed(() => route.path)
 const isCollapsed = computed(() => layoutStore.sidebarCollapsed)
 const visibleMenuGroups = computed(() => filterMenuGroups(authStore.menuPaths))
 
-function resolveIcon(name?: string) {
+function resolveIcon(name) {
   if (!name) return ElementPlusIcons.Menu
-  return (ElementPlusIcons as Record<string, typeof ElementPlusIcons.Menu>)[name] ?? ElementPlusIcons.Menu
+  return ElementPlusIcons[name] ?? ElementPlusIcons.Menu
 }
 
-function handleMenuSelect(path: string) {
+function handleMenuSelect(path) {
   router.push(path)
 }
 </script>

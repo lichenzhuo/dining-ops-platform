@@ -1,25 +1,28 @@
 import js from '@eslint/js'
 import pluginVue from 'eslint-plugin-vue'
-import tseslint from 'typescript-eslint'
 import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
-import vueTsEslintConfig from '@vue/eslint-config-typescript'
+import globals from 'globals'
 
-export default tseslint.config(
+export default [
   {
     name: 'app/files-to-lint',
-    files: ['**/*.{ts,mjs,js,vue}'],
+    files: ['**/*.{js,mjs,vue}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
   },
   {
-    name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/node_modules/**', 'src/types/auto-imports.d.ts', 'src/types/components.d.ts'],
+    ignores: ['**/dist/**', '**/node_modules/**'],
   },
   js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
-  ...vueTsEslintConfig(),
   skipFormatting,
   {
     rules: {
       'vue/multi-word-component-names': 'off',
     },
   },
-)
+]

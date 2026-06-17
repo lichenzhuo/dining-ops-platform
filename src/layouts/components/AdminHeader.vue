@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
@@ -9,15 +9,15 @@ const authStore = useAuthStore()
 
 const brand = computed({
   get: () => authStore.org.brand,
-  set: (value: string) => authStore.updateOrg({ brand: value }),
+  set: (value) => authStore.updateOrg({ brand: value }),
 })
 const region = computed({
   get: () => authStore.org.region,
-  set: (value: string) => authStore.updateOrg({ region: value }),
+  set: (value) => authStore.updateOrg({ region: value }),
 })
 const store = computed({
   get: () => authStore.org.store,
-  set: (value: string) => authStore.updateOrg({ store: value }),
+  set: (value) => authStore.updateOrg({ store: value }),
 })
 
 const breadcrumbs = computed(() => {
@@ -26,14 +26,10 @@ const breadcrumbs = computed(() => {
     return [{ title: '首页', path: '/dashboard' }]
   }
   return [{ title: '首页', path: '/dashboard' }, ...matched.map((item) => ({
-    title: item.meta.title as string,
+    title: item.meta.title,
     path: item.path,
   }))]
 })
-
-function goLargeScreen() {
-  router.push('/large-screen')
-}
 
 function handleLogout() {
   authStore.logout()
@@ -77,26 +73,11 @@ function handleLogout() {
     </div>
 
     <div class="header-right">
-      <el-tooltip content="经营指挥大屏" placement="bottom">
-        <button type="button" class="header-icon-btn" @click="goLargeScreen">
-          <el-icon><Monitor /></el-icon>
-        </button>
-      </el-tooltip>
-      <el-tooltip content="全局搜索" placement="bottom">
-        <button type="button" class="header-icon-btn">
-          <el-icon><Search /></el-icon>
-        </button>
-      </el-tooltip>
       <el-badge :value="5" :max="99" class="header-badge">
         <button type="button" class="header-icon-btn">
           <el-icon><Bell /></el-icon>
         </button>
       </el-badge>
-      <el-tooltip content="帮助中心" placement="bottom">
-        <button type="button" class="header-icon-btn">
-          <el-icon><QuestionFilled /></el-icon>
-        </button>
-      </el-tooltip>
 
       <el-divider direction="vertical" />
 
@@ -111,14 +92,6 @@ function handleLogout() {
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>
-              <el-icon><User /></el-icon>
-              个人中心
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <el-icon><Setting /></el-icon>
-              偏好设置
-            </el-dropdown-item>
             <el-dropdown-item divided @click="handleLogout">
               <el-icon><SwitchButton /></el-icon>
               退出登录

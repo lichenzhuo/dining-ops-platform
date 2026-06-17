@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 import { RouterView } from 'vue-router'
 import { useLayoutStore } from '@/stores/layout'

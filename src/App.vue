@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import LayoutSwitcher from '@/layouts/LayoutSwitcher.vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 </script>
