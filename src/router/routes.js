@@ -58,6 +58,17 @@ const routes = [
     },
   },
   {
+    path: '/visualization-lab',
+    name: 'VisualizationLab',
+    component: () => import('@/views/visualization-lab/VisualizationLabPage.vue'),
+    meta: {
+      title: '可视化实验室',
+      layout: 'admin',
+      icon: 'DataBoard',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/dashboard',
   },

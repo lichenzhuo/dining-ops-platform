@@ -4,14 +4,15 @@ import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useLargeScreenStore } from '@/stores/largeScreen'
+import { CanvasParticleLayer } from '@/visualization'
 import { useFullscreen } from './composables/useFullscreen'
 import { useScreenScale } from './composables/useScreenScale'
 import ScreenHeader from './components/ScreenHeader.vue'
 import ScreenKpiBar from './components/ScreenKpiBar.vue'
 import ScreenLeftPanel from './components/ScreenLeftPanel.vue'
 import ScreenMapPanel from './components/ScreenMapPanel.vue'
-import ScreenPipelineBar from './components/ScreenPipelineBar.vue'
 import ScreenRightPanel from './components/ScreenRightPanel.vue'
+import ScreenSvgPipelineBar from './components/ScreenSvgPipelineBar.vue'
 import ScreenTrendPanel from './components/ScreenTrendPanel.vue'
 
 const router = useRouter()
@@ -52,6 +53,7 @@ function handleOpenReport(payload = {}) {
 
 <template>
   <div ref="viewportRef" class="large-screen-viewport">
+    <CanvasParticleLayer :density="56" />
     <div class="large-screen-bg" />
     <div class="large-screen-glow large-screen-glow--left" />
     <div class="large-screen-glow large-screen-glow--right" />
@@ -99,7 +101,7 @@ function handleOpenReport(payload = {}) {
           <ScreenRightPanel :right-panel="data.rightPanel" @open-report="handleOpenReport" />
         </section>
 
-        <ScreenPipelineBar :items="data.pipeline" />
+        <ScreenSvgPipelineBar :items="data.pipeline" />
       </template>
     </div>
   </div>
@@ -149,7 +151,7 @@ function handleOpenReport(payload = {}) {
   top: 0;
   left: 0;
   display: grid;
-  grid-template-rows: 72px 96px 1fr 68px;
+  grid-template-rows: 72px 96px 1fr 88px;
   gap: 10px;
   padding: 12px 18px;
   color: $screen-text-primary;
