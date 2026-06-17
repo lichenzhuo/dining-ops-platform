@@ -91,6 +91,17 @@ const routes = [
     },
   },
   {
+    path: '/ai-agent',
+    name: 'AiAgent',
+    component: () => import('@/views/ai-agent/AiAgentPage.vue'),
+    meta: {
+      title: 'AI 营销 Agent',
+      layout: 'admin',
+      icon: 'MagicStick',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/dashboard',
   },

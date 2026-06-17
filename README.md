@@ -175,6 +175,7 @@ Electron
 - SVG / Canvas 可视化增强：`/visualization-lab`（SVG 数据链路、审批流、营销任务流；Canvas 大量点位实验；D3 会员分层与渠道漏斗）；经营大屏已接入 SVG 数据链路与 Canvas 粒子背景
 - D3 / X6 流程可视化：`/workflow-designer`（X6 拖拽连线、节点配置、流程 JSON 导出；审批流 / AI 营销任务流 / 数据接入链路模板）
 - WebSocket / MQTT 实时数据：`/realtime-monitor`（Mock WebSocket 心跳、MQTT topic 订阅、订单流 / 库存预警 / 运营告警 / 导出任务 / 审批待办；AdminHeader 告警角标；报表导出 MQTT 完成通知；经营大屏实时订单滚动）
+- AI 营销 Agent `/ai-agent`（任务配置、参数化 Prompt、结构化生成小红书 / 美团 / 店员文案与图片提示词；素材保存；审批 → 下发门店 → 效果追踪；Dashboard AI 建议一键跳转）
 
 本地启动：
 
@@ -189,7 +190,7 @@ npm run dev
 npm run build
 ```
 
-下一步：AI 营销 Agent。
+下一步：数据导入导出。
 
 
 ## 对外说明口径

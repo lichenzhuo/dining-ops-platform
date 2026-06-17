@@ -1,3 +1,4 @@
+export { useAiAgentStore } from './aiAgent'
 export { useAppStore } from './app'
 export { useAuthStore } from './auth'
 export { useDashboardStore } from './dashboard'

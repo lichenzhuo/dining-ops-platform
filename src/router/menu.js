@@ -5,6 +5,10 @@ export const adminMenuGroups = [
     items: [{ path: '/dashboard', title: '经营工作台', icon: 'Odometer' }],
   },
   {
+    title: '营销',
+    items: [{ path: '/ai-agent', title: 'AI 营销 Agent', icon: 'MagicStick' }],
+  },
+  {
     title: '分析',
     items: [
       { path: '/reports', title: '报表中心', icon: 'DataAnalysis' },

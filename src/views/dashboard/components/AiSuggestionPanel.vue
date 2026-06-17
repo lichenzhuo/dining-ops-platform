@@ -1,22 +1,33 @@
 <script setup>
+import { useRouter } from 'vue-router'
+
 defineProps({
   suggestions: {
     type: Array,
     required: true,
   },
 })
+
+const router = useRouter()
+
+function goAgent(suggestion) {
+  router.push({
+    path: '/ai-agent',
+    query: { suggestion },
+  })
+}
 </script>
 
 <template>
   <div class="panel-card ai-card">
     <div class="card-head">
       <h3>AI 今日建议</h3>
-      <el-tag size="small" effect="dark" type="success">AI</el-tag>
+      <el-button link type="primary" @click="goAgent('')">进入 AI Agent</el-button>
     </div>
     <ul class="ai-list">
       <li v-for="(item, index) in suggestions" :key="index">
         <el-icon class="ai-list__icon"><MagicStick /></el-icon>
-        {{ item }}
+        <button type="button" class="ai-list__link" @click="goAgent(item)">{{ item }}</button>
       </li>
     </ul>
   </div>
@@ -70,6 +81,21 @@ defineProps({
     flex-shrink: 0;
     margin-top: 2px;
     color: #722ed1;
+  }
+
+  &__link {
+    padding: 0;
+    font: inherit;
+    color: $text-secondary;
+    text-align: left;
+    cursor: pointer;
+    background: none;
+    border: none;
+
+    &:hover {
+      color: #722ed1;
+      text-decoration: underline;
+    }
   }
 }
 </style>
