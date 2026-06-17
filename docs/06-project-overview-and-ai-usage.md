@@ -164,7 +164,7 @@ Electron
 要求：
 1. 先阅读 README.md 和 docs 中相关文档。
 2. 只实现当前阶段，不提前实现后续模块。
-3. 使用 Vue3 + TypeScript + Element Plus + Pinia + Vue Router。
+3. 使用 Vue3 + Element Plus + Pinia + Vue Router（当前实践版为 JavaScript，见 docs/10 §5）。
 4. 保持项目既定设计方案和技术路线。
 5. 完成后说明：
    - 做了什么
@@ -323,3 +323,5 @@ flowchart LR
 这样就不需要每次重新描述项目背景、技术栈、学习目标和限制条件。
 
 完整 Prompt 模板与过程案例见 `src/constants/aiCodingWorkflow.js`、`.cursor/prompts/` 与 [`docs/09-ai-coding-workflow.md`](./09-ai-coding-workflow.md)。
+
+Phase 1–18 完成度自检见 [`docs/10-phase-completion-audit.md`](./10-phase-completion-audit.md)（路由清单、测试账号、联动验证、已知差距）。

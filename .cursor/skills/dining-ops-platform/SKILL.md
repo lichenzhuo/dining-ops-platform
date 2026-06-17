@@ -33,6 +33,7 @@ Before planning or coding, read the relevant docs:
 - `docs/03-development-roadmap.md`
 - `docs/04-job-aligned-learning-plan.md`
 - `docs/05-resume-and-interview-guide.md`
+- `docs/10-phase-completion-audit.md`（Phase 1–18 自检与已知差距）
 
 For design-related work, also inspect images under `docs/assets/`.
 

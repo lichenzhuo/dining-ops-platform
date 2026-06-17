@@ -146,3 +146,5 @@
 ## 9. 下一步
 
 Phase 19：Electron 桌面端（Web 完成后的承载层，不改变核心架构）。
+
+阶段完成度与已知差距见 [10-phase-completion-audit.md](./10-phase-completion-audit.md)。

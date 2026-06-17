@@ -196,6 +196,8 @@ IPC
 页面内部不做过度类型设计，避免为了类型而牺牲开发效率。
 ```
 
+**当前实现（Phase 18）**：源码为 JavaScript（`.js` / `.vue`），尚未接入 `tsconfig` 与类型文件。面试与简历中应区分「目标架构」与「当前实践版」；迁移路径见 [10-phase-completion-audit.md](./10-phase-completion-audit.md) §5。
+
 ## 4. 项目目录建议
 
 推荐目录：

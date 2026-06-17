@@ -175,9 +175,11 @@ iframe 接入老系统成本低，适合兼容历史 BI。
 
 ```text
 这个项目有报表字段、菜单权限、路由 meta、接口 DTO、AI 生成结果等复杂结构。
-使用 TypeScript 可以减少字段错误，提高后续维护性。
-但我采用渐进式 TS，不做过度类型设计。
+架构上采用渐进式 TypeScript，核心层优先做类型约束，页面内部不过度设计。
+当前实践版为 JavaScript，便于 Mock 与可视化模块快速迭代；接后端前可在 service / store 层先迁移 TS。
 ```
+
+详见 [docs/10-phase-completion-audit.md](./10-phase-completion-audit.md) §5。
 
 ### Q4：ECharts 怎么封装？
 

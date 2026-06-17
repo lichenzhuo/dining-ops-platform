@@ -740,10 +740,21 @@ Electron 在这个项目中是桌面端承载层，不改变核心 Web 架构。
 2. xxx
 3. xxx
 要求：
-- 使用 Vue3 + TypeScript + Element Plus
+- 使用 Vue3 + Element Plus（TypeScript 为渐进目标，见 docs/02 §3 与 docs/10）
 - 保持已有布局和样式规范
 - 不要实现未规划模块
 - 完成后说明本阶段涉及的 Vue3 知识点
 ```
 
 这样能保证开发过程不偏离学习目标。
+
+## 22. 阶段完成度自检
+
+Phase 1–18 完成后，用 **[docs/10-phase-completion-audit.md](./10-phase-completion-audit.md)** 核对：
+
+- 各阶段路由、Store、验收项是否齐全
+- 跨模块业务闭环是否可演示
+- TypeScript / Axios / 未实现模块等已知差距是否与文档一致
+- 三角色 Mock 账号权限是否符合预期
+
+下一步开发：**Phase 19 Electron 桌面端**。

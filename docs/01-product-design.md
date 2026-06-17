@@ -480,3 +480,30 @@ AI 要突出赋能，但视觉上要与后台系统协调。
 ![经营指挥大屏](assets/restaurant_command_screen_v2.png)
 
 这些设计图用于确定方向，后续开发时应以文档中的业务结构和交互说明为准。
+
+## 17. 实现状态（截至 Phase 18）
+
+产品与路由设计包含比当前实现更多的业务模块；**第 1–18 阶段仅实现学习主线所需路由**，其余为扩展位。
+
+**已实现（14 条路由）**：
+
+```text
+/login  /dashboard  /reports  /large-screen  /geo-visualization  /geo-3d
+/visualization-lab  /workflow-designer  /realtime-monitor  /ai-agent
+/data-import  /approval  /performance-lab  /ai-coding
+```
+
+**规划中、尚未实现**：
+
+```text
+/overview  /marketing  /coupons  /members  /staff-promotion  /materials  /settings
+```
+
+**与设计的已知差异**：
+
+- 源码当前为 **JavaScript**（TypeScript 见架构文档渐进策略）。
+- 数据层为 **Mock**，未接 Axios 与真实后端。
+- 登录页验证码 / 扫码为 UI 占位。
+- 报表明细采用服务端分页；虚拟滚动在 `/performance-lab` 演示。
+
+完整分阶段自检、联动验证清单与测试账号见 **[docs/10-phase-completion-audit.md](./10-phase-completion-audit.md)**。

@@ -109,6 +109,7 @@ Electron
 - [真实业务级包装与简历口径](docs/07-production-positioning-and-resume-packaging.md)
 - [模型路由与二次确认协议](docs/08-model-routing-and-confirmation.md)
 - [AI Coding 工作流沉淀](docs/09-ai-coding-workflow.md)
+- [阶段完成度自检（Phase 1–18）](docs/10-phase-completion-audit.md)
 
 ## 推荐开发顺序
 
@@ -161,16 +162,27 @@ Electron
 
 ## 当前状态
 
-已完成：
+**进度**：路线图第 1–18 阶段已完成，第 19 阶段（Electron）未开始。  
+**完整自检表**：[docs/10-phase-completion-audit.md](docs/10-phase-completion-audit.md)
 
-- Vue3 + Vite + TypeScript + Element Plus + Pinia + Vue Router 项目初始化
-- 登录页 `/login`（blank 布局、Mock 登录、记住账号）
+### 验证账号（Mock）
+
+| 账号 | 密码 | 角色 |
+|------|------|------|
+| `admin` | `123456` | 总部运营管理员（全部菜单） |
+| `region` | `123456` | 区域运营经理 |
+| `store` | `123456` | 门店店长 |
+
+### 已实现模块（Phase 1–18）
+
+- Vue3 + Vite + **JavaScript** + Element Plus + Pinia + Vue Router 项目初始化（TypeScript 为规划渐进栈，见 [docs/02 §3](docs/02-technical-architecture.md)）
+- 登录页 `/login`（blank 布局、Mock 登录、记住账号；验证码/扫码为 UI 占位）
 - 后台 `AdminLayout`（侧边菜单 + 顶部栏）、大屏 `ScreenLayout`、空白 `BlankLayout`
 - 根据 `route.meta.layout` 自动切换布局，路由懒加载
 - 路由守卫、Pinia 持久化（token / 用户信息 / 组织 / 菜单权限）、刷新后恢复登录态
 - 经营工作台 `/dashboard`（筛选条、KPI 卡片、趋势图、渠道图、客单价、门店排行、异常列表、审批待办、AI 建议、Mock 数据）
-- ECharts 通用封装 `BaseChart`（loading、empty、点击事件、ResizeObserver、实例生命周期管理），Dashboard 图表已接入
-- 原生报表中心 `/reports`（分类树、统一筛选、指标卡、图表分析、明细表、字段配置抽屉、常用视图、下钻交互、URL query 同步、导出任务提示、外部 BI 兼容占位）
+- ECharts 通用封装 `BaseChart`（loading、empty、点击事件、ResizeObserver、节流与 lazyUpdate、实例生命周期管理），Dashboard 图表已接入
+- 原生报表中心 `/reports`（分类树、统一筛选、指标卡、图表分析、明细表、字段配置抽屉、常用视图、下钻交互、URL query 同步、服务端分页、导出任务提示、外部 BI 兼容占位）
 - 经营指挥大屏 `/large-screen`（1920×1080 scale 适配、KPI 通栏、区域态势图、分时趋势、风险预警、数据链路监控、全屏展示、30s 自动刷新、点击跳转报表中心）
 - ECharts 地图 `/geo-visualization`（中国 GeoJSON、省份热力、门店 scatter、订单飞线、点击省市/门店下钻报表；大屏地图已同步接入）
 - SVG / Canvas 可视化增强：`/visualization-lab`（SVG 数据链路、审批流、营销任务流；Canvas 大量点位实验；D3 会员分层与渠道漏斗）；经营大屏已接入 SVG 数据链路与 Canvas 粒子背景
@@ -182,6 +194,24 @@ Electron
 - Three.js / Cesium 3D 可视化 `/geo-3d`（Cesium 3D 地球、区域柱状体、门店点位聚合、订单飞线、点击经营浮层；Three.js 3D 指标卡 Demo；可视化实验室 / ECharts 地图入口联动）
 - 可视化性能优化专题 `/performance-lab`（ECharts 实例复用与更新节流、虚拟滚动表格、Canvas 视口裁剪、Web Worker Excel 解析联动、Cesium 聚合与路由/Vite 分包策略）
 - AI Coding 工作流沉淀 `/ai-coding`（六步闭环、通用/阶段 Prompt 模板、过程案例、审查清单、`.cursor/prompts` 与 `docs/09-ai-coding-workflow.md`）
+
+### 实现说明与已知差距
+
+| 项 | 说明 |
+|----|------|
+| 数据层 | 当前为 `src/mocks/` + `src/services/`，**未接入 Axios 与真实后端** |
+| TypeScript | 架构文档按渐进式 TS 设计，**当前源码为 JavaScript** |
+| 未实现路由 | `/overview`、`/marketing`、`/coupons`、`/members`、`/staff-promotion`、`/materials`、`/settings` 等见产品规划，留作扩展 |
+| 虚拟滚动 | 报表中心使用服务端分页；虚拟滚动 Demo 在 `/performance-lab` |
+| Electron | Phase 19，尚未开始 |
+
+### 已实现路由一览
+
+```text
+/login  /dashboard  /reports  /large-screen  /geo-visualization  /geo-3d
+/visualization-lab  /workflow-designer  /realtime-monitor  /ai-agent
+/data-import  /approval  /performance-lab  /ai-coding
+```
 
 本地启动：
 

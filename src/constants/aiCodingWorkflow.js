@@ -323,6 +323,7 @@ export const AI_CODING_CASE_RECORDS = [
 
 /** 相关文档链接 */
 export const AI_CODING_DOC_LINKS = [
+  { title: '阶段完成度自检（Phase 1–18）', path: 'docs/10-phase-completion-audit.md' },
   { title: 'AI 使用方式总览', path: 'docs/06-project-overview-and-ai-usage.md' },
   { title: '模型路由与二次确认', path: 'docs/08-model-routing-and-confirmation.md' },
   { title: 'AI Coding 工作流（本阶段文档）', path: 'docs/09-ai-coding-workflow.md' },
