@@ -36,6 +36,28 @@ const routes = [
     },
   },
   {
+    path: '/large-screen',
+    name: 'LargeScreen',
+    component: () => import('@/views/large-screen/LargeScreenPage.vue'),
+    meta: {
+      title: '经营指挥大屏',
+      layout: 'screen',
+      icon: 'Monitor',
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/geo-visualization',
+    name: 'GeoVisualization',
+    component: () => import('@/views/geo-visualization/GeoVisualizationPage.vue'),
+    meta: {
+      title: '地图态势',
+      layout: 'admin',
+      icon: 'Location',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/dashboard',
   },

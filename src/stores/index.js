@@ -1,5 +1,7 @@
 export { useAppStore } from './app'
 export { useAuthStore } from './auth'
 export { useDashboardStore } from './dashboard'
+export { useGeoStore } from './geo'
+export { useLargeScreenStore } from './largeScreen'
 export { useLayoutStore } from './layout'
 export { useReportsStore } from './reports'

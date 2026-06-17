@@ -6,7 +6,11 @@ export const adminMenuGroups = [
   },
   {
     title: '分析',
-    items: [{ path: '/reports', title: '报表中心', icon: 'DataAnalysis' }],
+    items: [
+      { path: '/reports', title: '报表中心', icon: 'DataAnalysis' },
+      { path: '/geo-visualization', title: '地图态势', icon: 'Location' },
+      { path: '/large-screen', title: '经营指挥大屏', icon: 'Monitor' },
+    ],
   },
 ]
 

@@ -1,4 +1,4 @@
-const MENU_PATHS = ['/dashboard', '/reports']
+const MENU_PATHS = ['/dashboard', '/reports', '/geo-visualization', '/large-screen']
 
 const MOCK_ACCOUNTS = [
   {

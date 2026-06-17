@@ -170,6 +170,8 @@ Electron
 - 经营工作台 `/dashboard`（筛选条、KPI 卡片、趋势图、渠道图、客单价、门店排行、异常列表、审批待办、AI 建议、Mock 数据）
 - ECharts 通用封装 `BaseChart`（loading、empty、点击事件、ResizeObserver、实例生命周期管理），Dashboard 图表已接入
 - 原生报表中心 `/reports`（分类树、统一筛选、指标卡、图表分析、明细表、字段配置抽屉、常用视图、下钻交互、URL query 同步、导出任务提示、外部 BI 兼容占位）
+- 经营指挥大屏 `/large-screen`（1920×1080 scale 适配、KPI 通栏、区域态势图、分时趋势、风险预警、数据链路监控、全屏展示、30s 自动刷新、点击跳转报表中心）
+- ECharts 地图 `/geo-visualization`（中国 GeoJSON、省份热力、门店 scatter、订单飞线、点击省市/门店下钻报表；大屏地图已同步接入）
 
 本地启动：
 
@@ -184,7 +186,7 @@ npm run dev
 npm run build
 ```
 
-下一步：经营指挥大屏。
+下一步：SVG / Canvas 可视化增强。
 
 
 ## 对外说明口径
