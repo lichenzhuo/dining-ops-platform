@@ -321,3 +321,5 @@ flowchart LR
 ```
 
 这样就不需要每次重新描述项目背景、技术栈、学习目标和限制条件。
+
+完整 Prompt 模板与过程案例见 `src/constants/aiCodingWorkflow.js`、`.cursor/prompts/` 与 [`docs/09-ai-coding-workflow.md`](./09-ai-coding-workflow.md)。

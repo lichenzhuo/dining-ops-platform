@@ -16,13 +16,19 @@ export const adminMenuGroups = [
     items: [{ path: '/data-import', title: '数据导入导出', icon: 'Upload' }],
   },
   {
+    title: '工程',
+    items: [
+      { path: '/performance-lab', title: '性能优化专题', icon: 'Cpu' },
+      { path: '/ai-coding', title: 'AI Coding 工作流', icon: 'Notebook' },
+    ],
+  },
+  {
     title: '分析',
     items: [
       { path: '/reports', title: '报表中心', icon: 'DataAnalysis' },
       { path: '/geo-visualization', title: '地图态势', icon: 'Location' },
       { path: '/geo-3d', title: '3D 地理态势', icon: 'Place' },
       { path: '/visualization-lab', title: '可视化实验室', icon: 'DataBoard' },
-      { path: '/performance-lab', title: '性能优化专题', icon: 'Cpu' },
       { path: '/workflow-designer', title: '流程设计器', icon: 'Share' },
       { path: '/realtime-monitor', title: '实时监测', icon: 'Connection' },
       { path: '/large-screen', title: '经营指挥大屏', icon: 'Monitor' },

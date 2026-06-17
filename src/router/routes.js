@@ -91,6 +91,17 @@ const routes = [
     },
   },
   {
+    path: '/ai-coding',
+    name: 'AiCodingWorkflow',
+    component: () => import('@/views/ai-coding/AiCodingWorkflowPage.vue'),
+    meta: {
+      title: 'AI Coding 工作流',
+      layout: 'admin',
+      icon: 'Notebook',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/workflow-designer',
     name: 'WorkflowDesigner',
     component: () => import('@/views/workflow-designer/WorkflowDesignerPage.vue'),

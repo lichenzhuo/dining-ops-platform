@@ -108,6 +108,7 @@ Electron
 - [项目总览、学习路线评估与 AI 使用方式](docs/06-project-overview-and-ai-usage.md)
 - [真实业务级包装与简历口径](docs/07-production-positioning-and-resume-packaging.md)
 - [模型路由与二次确认协议](docs/08-model-routing-and-confirmation.md)
+- [AI Coding 工作流沉淀](docs/09-ai-coding-workflow.md)
 
 ## 推荐开发顺序
 
@@ -180,6 +181,7 @@ Electron
 - 权限与审批中心 `/approval`（RBAC 角色/菜单/按钮权限、`v-permission` 指令；审批待办；营销活动 / AI 内容 / 卡券 / 预算 / 库存审批流状态机；AI Agent 提交审批联动）
 - Three.js / Cesium 3D 可视化 `/geo-3d`（Cesium 3D 地球、区域柱状体、门店点位聚合、订单飞线、点击经营浮层；Three.js 3D 指标卡 Demo；可视化实验室 / ECharts 地图入口联动）
 - 可视化性能优化专题 `/performance-lab`（ECharts 实例复用与更新节流、虚拟滚动表格、Canvas 视口裁剪、Web Worker Excel 解析联动、Cesium 聚合与路由/Vite 分包策略）
+- AI Coding 工作流沉淀 `/ai-coding`（六步闭环、通用/阶段 Prompt 模板、过程案例、审查清单、`.cursor/prompts` 与 `docs/09-ai-coding-workflow.md`）
 
 本地启动：
 
@@ -194,7 +196,7 @@ npm run dev
 npm run build
 ```
 
-下一步：AI Coding 工作流沉淀。
+下一步：Electron 桌面端。
 
 
 ## 对外说明口径

@@ -31,6 +31,7 @@ export const ALL_MENU_PATHS = [
   '/geo-3d',
   '/visualization-lab',
   '/performance-lab',
+  '/ai-coding',
   '/workflow-designer',
   '/realtime-monitor',
   '/large-screen',
