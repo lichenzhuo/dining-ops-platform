@@ -23,5 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# TypeScript
+# TypeScript（项目已改为纯 JS，忽略插件可能生成的类型文件）
 *.tsbuildinfo
+auto-imports.d.ts
+components.d.ts
