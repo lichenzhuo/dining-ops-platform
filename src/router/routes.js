@@ -58,6 +58,17 @@ const routes = [
     },
   },
   {
+    path: '/geo-3d',
+    name: 'Geo3d',
+    component: () => import('@/views/geo-3d/Geo3dPage.vue'),
+    meta: {
+      title: '3D 地理态势',
+      layout: 'admin',
+      icon: 'Place',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/visualization-lab',
     name: 'VisualizationLab',
     component: () => import('@/views/visualization-lab/VisualizationLabPage.vue'),

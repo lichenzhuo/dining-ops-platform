@@ -50,6 +50,7 @@ function handleStoreClick(payload) {
         <p>ECharts + GeoJSON · 区域热力 · 门店点位 · 订单飞线 · 点击下钻报表</p>
       </div>
       <div class="geo-page__actions">
+        <el-button @click="router.push('/geo-3d')">3D 地理态势</el-button>
         <el-button type="primary" :loading="loading" @click="handleRefresh">刷新</el-button>
         <el-button @click="router.push('/large-screen')">打开经营大屏</el-button>
       </div>

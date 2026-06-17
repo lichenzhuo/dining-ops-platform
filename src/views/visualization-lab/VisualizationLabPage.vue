@@ -10,6 +10,7 @@ import {
   MARKETING_WORKFLOW,
   SvgDataPipeline,
   SvgWorkflowDiagram,
+  ThreeStoreCardScene,
 } from '@/visualization'
 
 const router = useRouter()
@@ -41,9 +42,12 @@ function handleD3Click(item) {
     <header class="viz-lab__header">
       <div>
         <h2>可视化实验室</h2>
-        <p>SVG / Canvas / D3 / X6 分层负责不同可视化场景；ECharts 负责常规统计图表。</p>
+        <p>SVG / Canvas / D3 / X6 / Three.js / Cesium 分层负责不同可视化场景；ECharts 负责常规统计图表。</p>
       </div>
-      <el-button type="primary" @click="router.push('/workflow-designer')">打开 X6 流程设计器</el-button>
+      <div class="viz-lab__header-actions">
+        <el-button @click="router.push('/geo-3d')">打开 Cesium 3D 态势</el-button>
+        <el-button type="primary" @click="router.push('/workflow-designer')">打开 X6 流程设计器</el-button>
+      </div>
     </header>
 
     <el-tabs v-model="activeTab" class="viz-lab__tabs">
@@ -95,6 +99,14 @@ function handleD3Click(item) {
         </section>
       </el-tab-pane>
 
+      <el-tab-pane label="Three.js 3D 指标卡" name="three">
+        <section class="panel-card">
+          <h3>Three.js 3D 门店指标卡 Demo</h3>
+          <p class="panel-card__desc">Scene / Camera / Renderer / 几何体 / 材质 / 光照 / 动画循环 / dispose。</p>
+          <ThreeStoreCardScene />
+        </section>
+      </el-tab-pane>
+
       <el-tab-pane label="D3 渠道漏斗" name="d3-funnel">
         <section class="panel-card">
           <h3>渠道转化漏斗</h3>
@@ -112,6 +124,8 @@ function handleD3Click(item) {
         <li><strong>Canvas</strong>：大量点位、粒子背景、轨迹动画等高频重绘场景。</li>
         <li><strong>D3</strong>：会员分层、渠道漏斗等高度定制的数据驱动 SVG 图形。</li>
         <li><strong>X6</strong>：可拖拽、可连线的流程编排与设计器，见 <router-link to="/workflow-designer">流程设计器</router-link>。</li>
+        <li><strong>Three.js</strong>：通用 WebGL 3D 场景与指标卡实验，见本页 Tab 或 <router-link to="/geo-3d">3D 地理态势</router-link>。</li>
+        <li><strong>Cesium</strong>：3D 地球、门店点位、区域柱状体与飞线，见 <router-link to="/geo-3d">3D 地理态势</router-link>。</li>
       </ul>
     </section>
   </div>
@@ -140,6 +154,12 @@ function handleD3Click(item) {
       font-size: 13px;
       color: $text-tertiary;
     }
+  }
+
+  &__header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   &__tabs {

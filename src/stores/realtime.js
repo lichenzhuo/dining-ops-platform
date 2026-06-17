@@ -15,10 +15,16 @@ function parsePayload(message) {
   }
 }
 
-function pushToStream(list, item, max = MAX_STREAM_SIZE) {
-  list.unshift({ ...item, id: `${item.type}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}` })
-  if (list.length > max) {
-    list.length = max
+function pushToStream(listRef, item, max = MAX_STREAM_SIZE) {
+  if (!Array.isArray(listRef.value)) {
+    listRef.value = []
+  }
+  listRef.value.unshift({
+    ...item,
+    id: `${item.type}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+  })
+  if (listRef.value.length > max) {
+    listRef.value.length = max
   }
 }
 

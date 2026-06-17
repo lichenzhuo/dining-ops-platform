@@ -20,6 +20,7 @@ export const adminMenuGroups = [
     items: [
       { path: '/reports', title: '报表中心', icon: 'DataAnalysis' },
       { path: '/geo-visualization', title: '地图态势', icon: 'Location' },
+      { path: '/geo-3d', title: '3D 地理态势', icon: 'Place' },
       { path: '/visualization-lab', title: '可视化实验室', icon: 'DataBoard' },
       { path: '/workflow-designer', title: '流程设计器', icon: 'Share' },
       { path: '/realtime-monitor', title: '实时监测', icon: 'Connection' },

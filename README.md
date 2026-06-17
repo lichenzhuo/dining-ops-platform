@@ -178,6 +178,7 @@ Electron
 - AI 营销 Agent `/ai-agent`（任务配置、参数化 Prompt、结构化生成小红书 / 美团 / 店员文案与图片提示词；素材保存；审批 → 下发门店 → 效果追踪；Dashboard AI 建议一键跳转）
 - 数据导入导出 `/data-import`（xlsx 模板下载、Excel 上传解析、Web Worker 解析、字段校验、错误行展示、确认导入；导出任务队列；小数据前端 Excel 导出；报表中心 / MQTT 导出通知联动）
 - 权限与审批中心 `/approval`（RBAC 角色/菜单/按钮权限、`v-permission` 指令；审批待办；营销活动 / AI 内容 / 卡券 / 预算 / 库存审批流状态机；AI Agent 提交审批联动）
+- Three.js / Cesium 3D 可视化 `/geo-3d`（Cesium 3D 地球、区域柱状体、门店点位聚合、订单飞线、点击经营浮层；Three.js 3D 指标卡 Demo；可视化实验室 / ECharts 地图入口联动）
 
 本地启动：
 
@@ -192,7 +193,7 @@ npm run dev
 npm run build
 ```
 
-下一步：Three.js / Cesium 3D 可视化。
+下一步：可视化性能优化专题。
 
 
 ## 对外说明口径
