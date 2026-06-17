@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
@@ -17,6 +18,7 @@ import TrendChartPanel from './components/TrendChartPanel.vue'
 
 const authStore = useAuthStore()
 const dashboardStore = useDashboardStore()
+const router = useRouter()
 const { filters, data, loading, error } = storeToRefs(dashboardStore)
 
 onMounted(() => {
@@ -44,7 +46,8 @@ async function handleReset() {
 }
 
 function handleExport() {
-  ElMessage.info('导出任务已创建，稍后可在导出中心查看（Mock）')
+  router.push({ path: '/data-import', query: { tab: 'export' } })
+  ElMessage.info('已前往导出中心')
 }
 
 function handleFiltersUpdate(nextFilters) {

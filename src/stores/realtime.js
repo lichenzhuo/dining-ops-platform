@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { MQTT_TOPICS, WS_CHANNELS } from '@/realtime/constants/topics'
 import { createMqttClient } from '@/realtime/mqttClient'
 import { createWebSocketClient } from '@/realtime/websocketClient'
+import { useExportQueueStore } from '@/stores/exportQueue'
 
 const MAX_STREAM_SIZE = 50
 
@@ -86,6 +87,10 @@ export const useRealtimeStore = defineStore('realtime', () => {
         break
       case MQTT_TOPICS.EXPORT:
         pushToStream(exportMessages, payload)
+        useExportQueueStore().markDoneByReport(payload.reportId, {
+          message: payload.message,
+          fileName: `${payload.reportId}.xlsx`,
+        })
         break
       case MQTT_TOPICS.APPROVAL:
         pushToStream(approvals, payload)

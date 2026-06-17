@@ -1,4 +1,6 @@
 <script setup>
+import { useRouter } from 'vue-router'
+
 defineProps({
   exportTask: {
     type: Object,
@@ -7,6 +9,11 @@ defineProps({
 })
 
 const emit = defineEmits(['clear'])
+const router = useRouter()
+
+function goExportCenter() {
+  router.push({ path: '/data-import', query: { tab: 'export' } })
+}
 </script>
 
 <template>
@@ -19,9 +26,12 @@ const emit = defineEmits(['clear'])
           {{ exportTask.status === 'done' ? '已完成' : '处理中' }}
         </el-tag>
       </div>
-      <el-button v-if="exportTask.status === 'done'" link type="primary" @click="emit('clear')">
-        知道了
-      </el-button>
+      <div class="export-tip__actions">
+        <el-button link type="primary" @click="goExportCenter">导出中心</el-button>
+        <el-button v-if="exportTask.status === 'done'" link type="primary" @click="emit('clear')">
+          知道了
+        </el-button>
+      </div>
     </div>
   </transition>
 </template>
@@ -42,6 +52,11 @@ const emit = defineEmits(['clear'])
     align-items: center;
     font-size: 13px;
     color: $text-secondary;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 4px;
   }
 }
 

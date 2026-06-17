@@ -9,6 +9,10 @@ export const adminMenuGroups = [
     items: [{ path: '/ai-agent', title: 'AI 营销 Agent', icon: 'MagicStick' }],
   },
   {
+    title: '数据',
+    items: [{ path: '/data-import', title: '数据导入导出', icon: 'Upload' }],
+  },
+  {
     title: '分析',
     items: [
       { path: '/reports', title: '报表中心', icon: 'DataAnalysis' },

@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import { ElMessage } from 'element-plus'
 import { useReportsStore } from '@/stores/reports'
 import { useRealtimeStore } from '@/stores/realtime'
+import { useExportQueueStore } from '@/stores/exportQueue'
 import KpiCardRow from '@/views/dashboard/components/KpiCardRow.vue'
 import ExternalBiPanel from './components/ExternalBiPanel.vue'
 import ReportCategoryTree from './components/ReportCategoryTree.vue'
@@ -19,6 +20,7 @@ const route = useRoute()
 const router = useRouter()
 const reportsStore = useReportsStore()
 const realtimeStore = useRealtimeStore()
+const exportQueueStore = useExportQueueStore()
 
 const {
   reportId,
@@ -49,6 +51,10 @@ watch(
         status: 'done',
         message: latest.message,
       }
+      exportQueueStore.markDoneByReport(latest.reportId, {
+        message: latest.message,
+        fileName: `${latest.reportId}.xlsx`,
+      })
       ElMessage.success('导出任务已完成（MQTT 通知）')
     }
   },

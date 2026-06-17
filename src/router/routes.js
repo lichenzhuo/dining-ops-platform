@@ -102,6 +102,17 @@ const routes = [
     },
   },
   {
+    path: '/data-import',
+    name: 'DataImport',
+    component: () => import('@/views/data-import/DataImportPage.vue'),
+    meta: {
+      title: '数据导入导出',
+      layout: 'admin',
+      icon: 'Upload',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/dashboard',
   },

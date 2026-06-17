@@ -1,8 +1,9 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { getDefaultVisibleColumns } from '@/constants/reports'
+import { getDefaultVisibleColumns, getReportTitle } from '@/constants/reports'
 import { createReportExportTask, fetchReportData } from '@/services/reports'
 import { useAuthStore } from '@/stores/auth'
+import { useExportQueueStore } from '@/stores/exportQueue'
 
 function defaultDateRange() {
   const end = new Date()
@@ -205,13 +206,24 @@ export const useReportsStore = defineStore(
     }
 
     async function createExportTask() {
-      exportTask.value = await createReportExportTask(query.value)
-      window.setTimeout(() => {
+      const exportQueueStore = useExportQueueStore()
+      const task = await createReportExportTask(query.value)
+      exportQueueStore.addTask({
+        ...task,
+        reportName: getReportTitle(reportId.value),
+      })
+      exportTask.value = task
+
+      window.setTimeout(async () => {
         if (exportTask.value?.id) {
+          const updated = exportQueueStore.markDone(exportTask.value.id, {
+            message: '导出文件已生成，可在导出中心下载（Mock）',
+            fileName: `${getReportTitle(reportId.value)}.xlsx`,
+          })
           exportTask.value = {
             ...exportTask.value,
             status: 'done',
-            message: '导出文件已生成，可在导出中心下载（Mock）',
+            message: updated?.message ?? '导出文件已生成，可在导出中心下载（Mock）',
           }
         }
       }, 2800)
