@@ -25,6 +25,17 @@ const routes = [
     },
   },
   {
+    path: '/reports',
+    name: 'Reports',
+    component: () => import('@/views/reports/ReportsPage.vue'),
+    meta: {
+      title: '报表中心',
+      layout: 'admin',
+      icon: 'DataAnalysis',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/dashboard',
   },

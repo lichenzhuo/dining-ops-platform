@@ -4,6 +4,10 @@ export const adminMenuGroups = [
     title: '工作台',
     items: [{ path: '/dashboard', title: '经营工作台', icon: 'Odometer' }],
   },
+  {
+    title: '分析',
+    items: [{ path: '/reports', title: '报表中心', icon: 'DataAnalysis' }],
+  },
 ]
 
 export const adminMenuItems = adminMenuGroups.flatMap((group) => group.items)

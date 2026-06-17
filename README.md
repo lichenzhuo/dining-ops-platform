@@ -169,6 +169,7 @@ Electron
 - 路由守卫、Pinia 持久化（token / 用户信息 / 组织 / 菜单权限）、刷新后恢复登录态
 - 经营工作台 `/dashboard`（筛选条、KPI 卡片、趋势图、渠道图、客单价、门店排行、异常列表、审批待办、AI 建议、Mock 数据）
 - ECharts 通用封装 `BaseChart`（loading、empty、点击事件、ResizeObserver、实例生命周期管理），Dashboard 图表已接入
+- 原生报表中心 `/reports`（分类树、统一筛选、指标卡、图表分析、明细表、字段配置抽屉、常用视图、下钻交互、URL query 同步、导出任务提示、外部 BI 兼容占位）
 
 本地启动：
 
@@ -183,7 +184,7 @@ npm run dev
 npm run build
 ```
 
-下一步：原生报表中心。
+下一步：经营指挥大屏。
 
 
 ## 对外说明口径
