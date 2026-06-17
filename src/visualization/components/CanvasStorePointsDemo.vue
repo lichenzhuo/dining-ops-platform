@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { GEO_HUB, GEO_STORES } from '@/constants/geo'
 import { resizeCanvas, useCanvasLoop } from '../composables/useCanvasLoop'
 
@@ -8,6 +8,11 @@ const props = defineProps({
     type: Number,
     default: 1200,
   },
+  /** 开启视口裁剪 + 空间网格命中检测 */
+  optimized: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const containerRef = ref()
@@ -15,10 +20,18 @@ const canvasRef = ref()
 const points = ref([])
 const hoveredIndex = ref(-1)
 const fps = ref(0)
+const visibleCount = ref(0)
 let frameCounter = 0
 let fpsTimer = 0
+let spatialGrid = null
 
-const statsText = computed(() => `${props.pointCount.toLocaleString('zh-CN')} 点位 · ${fps.value} FPS`)
+const statsText = computed(() => {
+  const base = `${props.pointCount.toLocaleString('zh-CN')} 点位 · ${fps.value} FPS`
+  if (!props.optimized) {
+    return base
+  }
+  return `${base} · 渲染 ${visibleCount.value.toLocaleString('zh-CN')}`
+})
 
 function generatePoints(count) {
   const list = []
@@ -49,6 +62,46 @@ function projectPoint(point, width, height) {
   point.y = (1 - (point.lat - minLat) / (maxLat - minLat)) * (height - 40) + 20
 }
 
+function buildSpatialGrid(width, height, cellSize = 24) {
+  const cols = Math.ceil(width / cellSize)
+  const rows = Math.ceil(height / cellSize)
+  const grid = Array.from({ length: cols * rows }, () => [])
+
+  points.value.forEach((point, index) => {
+    const col = Math.min(cols - 1, Math.max(0, Math.floor(point.x / cellSize)))
+    const row = Math.min(rows - 1, Math.max(0, Math.floor(point.y / cellSize)))
+    grid[row * cols + col].push(index)
+  })
+
+  return { grid, cols, rows, cellSize }
+}
+
+function isInViewport(point, width, height, margin = 8) {
+  return (
+    point.x >= -margin &&
+    point.x <= width + margin &&
+    point.y >= -margin &&
+    point.y <= height + margin
+  )
+}
+
+function drawBackground(ctx, width, height) {
+  ctx.clearRect(0, 0, width, height)
+  ctx.fillStyle = '#f7f9fb'
+  ctx.fillRect(0, 0, width, height)
+  ctx.strokeStyle = '#e5e6eb'
+  ctx.strokeRect(10, 10, width - 20, height - 20)
+}
+
+function drawPoint(ctx, point, index) {
+  const radius = 2 + (point.value / 100) * 2 + Math.sin(point.pulse) * 0.6
+  ctx.beginPath()
+  ctx.fillStyle = index === hoveredIndex.value ? '#1677ff' : '#13c2c2'
+  ctx.globalAlpha = index === hoveredIndex.value ? 1 : 0.72
+  ctx.arc(point.x, point.y, radius, 0, Math.PI * 2)
+  ctx.fill()
+}
+
 function drawFrame(time) {
   const canvas = canvasRef.value
   const container = containerRef.value
@@ -59,6 +112,7 @@ function drawFrame(time) {
   const { width, height } = resizeCanvas(canvas, container)
   if (points.value.length !== props.pointCount) {
     points.value = generatePoints(props.pointCount)
+    spatialGrid = null
   }
 
   const ctx = canvas.getContext('2d')
@@ -71,21 +125,29 @@ function drawFrame(time) {
     point.pulse += 0.03
   }
 
-  ctx.clearRect(0, 0, width, height)
-  ctx.fillStyle = '#f7f9fb'
-  ctx.fillRect(0, 0, width, height)
+  drawBackground(ctx, width, height)
 
-  ctx.strokeStyle = '#e5e6eb'
-  ctx.strokeRect(10, 10, width - 20, height - 20)
+  if (props.optimized) {
+    if (!spatialGrid || spatialGrid.width !== width || spatialGrid.height !== height) {
+      spatialGrid = { ...buildSpatialGrid(width, height), width, height }
+    }
 
-  for (const [index, point] of points.value.entries()) {
-    const radius = 2 + (point.value / 100) * 2 + Math.sin(point.pulse) * 0.6
-    ctx.beginPath()
-    ctx.fillStyle = index === hoveredIndex.value ? '#1677ff' : '#13c2c2'
-    ctx.globalAlpha = index === hoveredIndex.value ? 1 : 0.72
-    ctx.arc(point.x, point.y, radius, 0, Math.PI * 2)
-    ctx.fill()
+    let rendered = 0
+    for (const [index, point] of points.value.entries()) {
+      if (!isInViewport(point, width, height)) {
+        continue
+      }
+      drawPoint(ctx, point, index)
+      rendered += 1
+    }
+    visibleCount.value = rendered
+  } else {
+    visibleCount.value = points.value.length
+    for (const [index, point] of points.value.entries()) {
+      drawPoint(ctx, point, index)
+    }
   }
+
   ctx.globalAlpha = 1
 
   frameCounter += 1
@@ -98,7 +160,7 @@ function drawFrame(time) {
 
 useCanvasLoop(drawFrame)
 
-function findPointIndex(event) {
+function findPointIndexNaive(event) {
   const canvas = canvasRef.value
   if (!canvas) {
     return -1
@@ -119,8 +181,36 @@ function findPointIndex(event) {
   return hitIndex
 }
 
+function findPointIndexGrid(event) {
+  const canvas = canvasRef.value
+  if (!canvas || !spatialGrid) {
+    return -1
+  }
+  const rect = canvas.getBoundingClientRect()
+  const x = event.clientX - rect.left
+  const y = event.clientY - rect.top
+  const col = Math.floor(x / spatialGrid.cellSize)
+  const row = Math.floor(y / spatialGrid.cellSize)
+  if (col < 0 || row < 0 || col >= spatialGrid.cols || row >= spatialGrid.rows) {
+    return -1
+  }
+
+  const candidates = spatialGrid.grid[row * spatialGrid.cols + col]
+  let hitIndex = -1
+  let minDistance = 12
+  for (const index of candidates) {
+    const point = points.value[index]
+    const distance = Math.hypot(point.x - x, point.y - y)
+    if (distance < minDistance) {
+      minDistance = distance
+      hitIndex = index
+    }
+  }
+  return hitIndex
+}
+
 function handlePointerMove(event) {
-  hoveredIndex.value = findPointIndex(event)
+  hoveredIndex.value = props.optimized ? findPointIndexGrid(event) : findPointIndexNaive(event)
 }
 
 function handlePointerLeave() {
@@ -129,11 +219,30 @@ function handlePointerLeave() {
 
 let resizeObserver = null
 
-onMounted(() => {
+function resetPoints() {
   points.value = generatePoints(props.pointCount)
+  spatialGrid = null
+}
+
+watch(
+  () => props.pointCount,
+  () => {
+    resetPoints()
+  },
+)
+
+watch(
+  () => props.optimized,
+  () => {
+    spatialGrid = null
+  },
+)
+
+onMounted(() => {
+  resetPoints()
   if (containerRef.value && typeof ResizeObserver !== 'undefined') {
     resizeObserver = new ResizeObserver(() => {
-      points.value = generatePoints(props.pointCount)
+      spatialGrid = null
     })
     resizeObserver.observe(containerRef.value)
   }
@@ -152,6 +261,7 @@ onUnmounted(() => {
       @pointerleave="handlePointerLeave"
     />
     <div class="canvas-store-points__stats">{{ statsText }}</div>
+    <p v-if="optimized" class="canvas-store-points__badge">视口裁剪</p>
     <p v-if="hoveredIndex >= 0" class="canvas-store-points__hint">
       命中点位 #{{ hoveredIndex + 1 }} · 值 {{ Math.round(points[hoveredIndex]?.value ?? 0) }}
     </p>
@@ -181,6 +291,18 @@ onUnmounted(() => {
     font-size: 12px;
     color: $text-secondary;
     background: rgba(255, 255, 255, 0.88);
+    border-radius: $radius-sm;
+  }
+
+  &__badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    margin: 0;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: $color-primary;
+    background: rgba(255, 255, 255, 0.92);
     border-radius: $radius-sm;
   }
 

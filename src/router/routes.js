@@ -80,6 +80,17 @@ const routes = [
     },
   },
   {
+    path: '/performance-lab',
+    name: 'PerformanceLab',
+    component: () => import('@/views/performance-lab/PerformanceLabPage.vue'),
+    meta: {
+      title: '性能优化专题',
+      layout: 'admin',
+      icon: 'Cpu',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/workflow-designer',
     name: 'WorkflowDesigner',
     component: () => import('@/views/workflow-designer/WorkflowDesignerPage.vue'),

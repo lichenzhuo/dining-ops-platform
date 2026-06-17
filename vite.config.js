@@ -46,4 +46,27 @@ export default defineConfig({
     port: 5173,
     open: true,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/cesium')) {
+            return 'vendor-cesium'
+          }
+          if (id.includes('node_modules/three')) {
+            return 'vendor-three'
+          }
+          if (id.includes('node_modules/echarts')) {
+            return 'vendor-echarts'
+          }
+          if (id.includes('node_modules/@antv/x6')) {
+            return 'vendor-x6'
+          }
+          if (id.includes('node_modules/xlsx')) {
+            return 'vendor-xlsx'
+          }
+        },
+      },
+    },
+  },
 })

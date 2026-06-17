@@ -45,6 +45,7 @@ function handleD3Click(item) {
         <p>SVG / Canvas / D3 / X6 / Three.js / Cesium 分层负责不同可视化场景；ECharts 负责常规统计图表。</p>
       </div>
       <div class="viz-lab__header-actions">
+        <el-button @click="router.push('/performance-lab')">性能优化专题</el-button>
         <el-button @click="router.push('/geo-3d')">打开 Cesium 3D 态势</el-button>
         <el-button type="primary" @click="router.push('/workflow-designer')">打开 X6 流程设计器</el-button>
       </div>
@@ -80,7 +81,10 @@ function handleD3Click(item) {
           <div class="panel-card__toolbar">
             <div>
               <h3>Canvas 门店点位渲染实验</h3>
-              <p class="panel-card__desc">用 Canvas + requestAnimationFrame 绘制大量点位，避免 DOM 节点过多。</p>
+              <p class="panel-card__desc">
+                用 Canvas + requestAnimationFrame 绘制大量点位，避免 DOM 节点过多；视口裁剪对比见
+                <el-link type="primary" @click="router.push('/performance-lab')">性能优化专题</el-link>。
+              </p>
             </div>
             <div class="panel-card__control">
               <span>点位数量 {{ pointCount }}</span>

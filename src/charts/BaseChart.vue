@@ -1,5 +1,6 @@
 <script setup>
 import { computed, nextTick, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
+import { throttle } from '@/utils/performance'
 import echarts from './echarts'
 import { isEmptyChartOption } from './utils'
 
@@ -75,7 +76,10 @@ async function ensureChart() {
     emit('ready', chartInstance.value)
   }
 
-  chartInstance.value.setOption(props.option, true)
+  chartInstance.value.setOption(props.option, {
+    notMerge: false,
+    lazyUpdate: true,
+  })
   syncLoadingState()
   chartInstance.value.resize()
 }
@@ -83,6 +87,11 @@ async function ensureChart() {
 function handleResize() {
   chartInstance.value?.resize()
 }
+
+const throttledResize = throttle(handleResize, 120)
+const throttledEnsureChart = throttle(() => {
+  ensureChart()
+}, 100)
 
 function disposeChart() {
   chartInstance.value?.dispose()
@@ -92,7 +101,7 @@ function disposeChart() {
 watch(
   () => props.option,
   () => {
-    ensureChart()
+    throttledEnsureChart()
   },
   { deep: true },
 )
@@ -112,7 +121,7 @@ onMounted(() => {
   ensureChart()
 
   if (containerRef.value && typeof ResizeObserver !== 'undefined') {
-    resizeObserver = new ResizeObserver(() => handleResize())
+    resizeObserver = new ResizeObserver(() => throttledResize())
     resizeObserver.observe(containerRef.value)
   }
 })
