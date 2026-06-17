@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getReportTitle } from '@/constants/reports'
+import { PERMISSIONS } from '@/constants/permissions'
 
 const props = defineProps({
   reportId: {
@@ -67,7 +68,9 @@ async function handleRemoveView(view) {
       </el-dropdown>
 
       <el-button @click="openSaveDialog">保存视图</el-button>
-      <el-button @click="emit('open-fields')">字段配置</el-button>
+      <el-button v-permission="PERMISSIONS.REPORT_FIELD_CONFIG" @click="emit('open-fields')">
+        字段配置
+      </el-button>
 
       <el-popover v-if="savedViews.length" placement="bottom-end" width="280" trigger="click">
         <template #reference>

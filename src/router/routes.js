@@ -113,6 +113,17 @@ const routes = [
     },
   },
   {
+    path: '/approval',
+    name: 'ApprovalCenter',
+    component: () => import('@/views/approval/ApprovalCenterPage.vue'),
+    meta: {
+      title: '审批中心',
+      layout: 'admin',
+      icon: 'Checked',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/dashboard',
   },

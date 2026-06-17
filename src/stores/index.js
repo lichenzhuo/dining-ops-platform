@@ -1,5 +1,6 @@
 export { useAiAgentStore } from './aiAgent'
 export { useAppStore } from './app'
+export { useApprovalStore } from './approval'
 export { useAuthStore } from './auth'
 export { useDashboardStore } from './dashboard'
 export { useDataImportStore } from './dataImport'

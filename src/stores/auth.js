@@ -15,6 +15,7 @@ export const useAuthStore = defineStore(
     const user = ref(null)
     const org = ref({ ...defaultOrg })
     const menuPaths = ref([])
+    const permissions = ref([])
     const sessionReady = ref(false)
 
     const isLoggedIn = computed(() => Boolean(token.value && user.value))
@@ -28,6 +29,7 @@ export const useAuthStore = defineStore(
       user.value = result.user
       org.value = result.org
       menuPaths.value = result.menuPaths
+      permissions.value = result.permissions ?? []
     }
 
     async function login(username, password) {
@@ -41,7 +43,7 @@ export const useAuthStore = defineStore(
         sessionReady.value = true
         return false
       }
-      if (user.value && menuPaths.value.length > 0) {
+      if (user.value && menuPaths.value.length > 0 && permissions.value.length > 0) {
         sessionReady.value = true
         return true
       }
@@ -61,7 +63,22 @@ export const useAuthStore = defineStore(
       user.value = null
       org.value = { ...defaultOrg }
       menuPaths.value = []
+      permissions.value = []
       sessionReady.value = true
+    }
+
+    function hasPermission(code) {
+      if (!code) {
+        return true
+      }
+      return permissions.value.includes(code)
+    }
+
+    function hasAnyPermission(codes = []) {
+      if (!codes.length) {
+        return true
+      }
+      return codes.some((code) => hasPermission(code))
     }
 
     function hasRole(role) {
@@ -88,6 +105,7 @@ export const useAuthStore = defineStore(
       user,
       org,
       menuPaths,
+      permissions,
       sessionReady,
       isLoggedIn,
       displayName,
@@ -100,13 +118,15 @@ export const useAuthStore = defineStore(
       hasRole,
       hasAnyRole,
       canAccessPath,
+      hasPermission,
+      hasAnyPermission,
       updateOrg,
     }
   },
   {
     persist: {
       key: 'dop-auth',
-      pick: ['token', 'user', 'org', 'menuPaths'],
+      pick: ['token', 'user', 'org', 'menuPaths', 'permissions'],
     },
   },
 )

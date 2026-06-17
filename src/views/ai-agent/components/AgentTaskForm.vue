@@ -5,6 +5,7 @@ import {
   PLATFORM_OPTIONS,
   STORE_SCOPE_OPTIONS,
 } from '@/constants/aiAgent'
+import { PERMISSIONS } from '@/constants/permissions'
 
 const taskForm = defineModel({ type: Object, required: true })
 
@@ -77,7 +78,7 @@ const platformOptions = PLATFORM_OPTIONS
         <el-switch v-model="taskForm.approvalRequired" active-text="需要审批" inactive-text="直接下发" />
       </el-form-item>
 
-      <el-button type="primary" class="agent-form__submit" @click="emit('generate')">
+      <el-button type="primary" class="agent-form__submit" v-permission="PERMISSIONS.AI_GENERATE" @click="emit('generate')">
         <el-icon><MagicStick /></el-icon>
         生成营销方案
       </el-button>

@@ -1,18 +1,27 @@
 <script setup>
+import { useRouter } from 'vue-router'
+
 defineProps({
   items: {
     type: Array,
     required: true,
   },
 })
+
+const router = useRouter()
+
+function goApprovalCenter() {
+  router.push('/approval')
+}
 </script>
 
 <template>
   <div class="panel-card table-card">
     <div class="card-head">
       <h3>审批待办</h3>
+      <el-button link type="primary" @click="goApprovalCenter">进入审批中心</el-button>
     </div>
-    <el-table :data="items" size="default">
+    <el-table :data="items" size="default" @row-click="goApprovalCenter">
       <el-table-column prop="title" label="审批事项" min-width="160" />
       <el-table-column prop="applicant" label="申请人" width="110" />
       <el-table-column prop="type" label="类型" width="100" />
@@ -46,5 +55,9 @@ defineProps({
     font-weight: 600;
     color: $text-primary;
   }
+}
+
+:deep(.el-table__row) {
+  cursor: pointer;
 }
 </style>

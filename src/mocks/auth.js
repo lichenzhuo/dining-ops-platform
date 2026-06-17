@@ -1,4 +1,10 @@
-const MENU_PATHS = ['/dashboard', '/ai-agent', '/data-import', '/reports', '/geo-visualization', '/visualization-lab', '/workflow-designer', '/realtime-monitor', '/large-screen']
+import {
+  ALL_MENU_PATHS,
+  PERMISSION_LABELS,
+  ROLE_LABELS,
+  resolveMenuPathsForRoles,
+  resolvePermissionsForRoles,
+} from '@/constants/permissions'
 
 const MOCK_ACCOUNTS = [
   {
@@ -10,14 +16,13 @@ const MOCK_ACCOUNTS = [
       displayName: '张运营',
       avatarText: '运',
       roles: ['hq_admin'],
-      roleLabel: '总部运营管理员',
+      roleLabel: ROLE_LABELS.hq_admin,
     },
     org: {
       brand: '味满鲜',
       region: '华东区',
       store: '全部门店',
     },
-    menuPaths: MENU_PATHS,
   },
   {
     username: 'region',
@@ -28,14 +33,13 @@ const MOCK_ACCOUNTS = [
       displayName: '李区域',
       avatarText: '区',
       roles: ['region_manager'],
-      roleLabel: '区域运营经理',
+      roleLabel: ROLE_LABELS.region_manager,
     },
     org: {
       brand: '味满鲜',
       region: '华南区',
       store: '全部门店',
     },
-    menuPaths: MENU_PATHS,
   },
   {
     username: 'store',
@@ -46,16 +50,26 @@ const MOCK_ACCOUNTS = [
       displayName: '王店长',
       avatarText: '店',
       roles: ['store_manager'],
-      roleLabel: '门店店长',
+      roleLabel: ROLE_LABELS.store_manager,
     },
     org: {
       brand: '味满鲜',
       region: '华东区',
       store: '上海南京路店',
     },
-    menuPaths: MENU_PATHS,
   },
 ]
+
+function buildSession(account) {
+  const permissions = resolvePermissionsForRoles(account.user.roles)
+  const menuPaths = resolveMenuPathsForRoles(account.user.roles)
+  return {
+    user: account.user,
+    org: account.org,
+    permissions,
+    menuPaths: menuPaths.length ? menuPaths : ALL_MENU_PATHS,
+  }
+}
 
 function delay(ms = 400) {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -73,11 +87,10 @@ export async function mockLogin(payload) {
   if (!account) {
     throw new Error('账号或密码错误')
   }
+  const session = buildSession(account)
   return {
     token: createToken(account.username),
-    user: account.user,
-    org: account.org,
-    menuPaths: account.menuPaths,
+    ...session,
   }
 }
 
@@ -88,10 +101,13 @@ export async function mockGetUserByToken(token) {
   if (!account) {
     return null
   }
+  const session = buildSession(account)
   return {
     token,
-    user: account.user,
-    org: account.org,
-    menuPaths: account.menuPaths,
+    ...session,
   }
+}
+
+export function getPermissionLabels(codes = []) {
+  return codes.map((code) => PERMISSION_LABELS[code] ?? code)
 }

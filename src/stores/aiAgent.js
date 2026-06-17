@@ -13,6 +13,7 @@ import {
   submitMarketingApproval,
 } from '@/services/aiAgent'
 import { useAuthStore } from '@/stores/auth'
+import { useApprovalStore } from '@/stores/approval'
 
 export const useAiAgentStore = defineStore(
   'aiAgent',
@@ -159,10 +160,18 @@ export const useAiAgentStore = defineStore(
         return null
       }
       const auth = useAuthStore()
+      const approvalStore = useApprovalStore()
       const record = await submitMarketingApproval({
         title: activeContent.value.xiaohongshuTitle,
         applicant: auth.displayName,
         contentId: activeContent.value.id,
+      })
+      await approvalStore.submitFromAiAgent({
+        title: activeContent.value.xiaohongshuTitle,
+        applicant: auth.displayName,
+        applicantId: auth.user?.id ?? 'unknown',
+        region: auth.org.region,
+        summary: activeContent.value.promotionSuggestion,
       })
       approvalRecord.value = record
       workflowStatus.value = AGENT_WORKFLOW_STATUS.PENDING_APPROVAL

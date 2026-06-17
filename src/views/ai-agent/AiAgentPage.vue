@@ -3,6 +3,7 @@ import { onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { ElMessage } from 'element-plus'
+import { PERMISSIONS } from '@/constants/permissions'
 import { useAiAgentStore } from '@/stores/aiAgent'
 import AgentGenerateWorkspace from './components/AgentGenerateWorkspace.vue'
 import AgentInsightPanel from './components/AgentInsightPanel.vue'
@@ -103,7 +104,7 @@ function handleReset() {
         >
           提交审批
         </el-button>
-        <el-button type="primary" :disabled="!canDispatch" @click="handleDispatch">
+        <el-button type="primary" :disabled="!canDispatch" v-permission="PERMISSIONS.AI_DISPATCH" @click="handleDispatch">
           下发门店
         </el-button>
         <el-button type="success" :disabled="!canTrack" @click="handleTrack">

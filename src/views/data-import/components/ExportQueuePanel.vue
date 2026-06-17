@@ -1,5 +1,6 @@
 <script setup>
 import { EXPORT_TASK_STATUS } from '@/constants/dataImport'
+import { PERMISSIONS } from '@/constants/permissions'
 
 defineProps({
   tasks: {
@@ -42,7 +43,7 @@ function formatTime(value) {
       </div>
       <div class="export-panel__actions">
         <el-tag v-if="pendingCount" type="warning">{{ pendingCount }} 个进行中</el-tag>
-        <el-button @click="emit('quick-export')">小数据快速导出</el-button>
+        <el-button v-permission="PERMISSIONS.DATA_EXPORT" @click="emit('quick-export')">小数据快速导出</el-button>
         <el-button plain @click="emit('clear-done')">清除已完成</el-button>
       </div>
     </div>

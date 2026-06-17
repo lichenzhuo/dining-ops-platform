@@ -2,7 +2,10 @@
 export const adminMenuGroups = [
   {
     title: '工作台',
-    items: [{ path: '/dashboard', title: '经营工作台', icon: 'Odometer' }],
+    items: [
+      { path: '/dashboard', title: '经营工作台', icon: 'Odometer' },
+      { path: '/approval', title: '审批中心', icon: 'Checked' },
+    ],
   },
   {
     title: '营销',

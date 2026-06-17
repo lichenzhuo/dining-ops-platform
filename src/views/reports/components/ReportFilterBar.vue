@@ -1,4 +1,7 @@
 <script setup>
+import { useRouter } from 'vue-router'
+import { PERMISSIONS } from '@/constants/permissions'
+
 const props = defineProps({
   filters: {
     type: Object,
@@ -80,7 +83,7 @@ function clearDrillStore() {
       <el-form-item>
         <el-button type="primary" :loading="loading" @click="emit('search')">查询</el-button>
         <el-button @click="emit('reset')">重置</el-button>
-        <el-button plain @click="emit('export')">导出</el-button>
+        <el-button plain @click="emit('export')" v-permission="PERMISSIONS.REPORT_EXPORT">导出</el-button>
       </el-form-item>
     </el-form>
   </section>

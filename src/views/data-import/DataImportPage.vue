@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { ElMessage } from 'element-plus'
+import { PERMISSIONS } from '@/constants/permissions'
 import { useDataImportStore } from '@/stores/dataImport'
 import { useExportQueueStore } from '@/stores/exportQueue'
 import ExportQueuePanel from './components/ExportQueuePanel.vue'
@@ -110,7 +111,13 @@ function handleQuickExport() {
 
           <div class="data-import-page__confirm">
             <el-button @click="handleResetImport">重新上传</el-button>
-            <el-button type="primary" :loading="importing" :disabled="!validRows.length" @click="handleConfirmImport">
+            <el-button
+              type="primary"
+              :loading="importing"
+              :disabled="!validRows.length"
+              v-permission="PERMISSIONS.DATA_IMPORT"
+              @click="handleConfirmImport"
+            >
               确认导入 {{ validRows.length }} 条有效数据
             </el-button>
           </div>
